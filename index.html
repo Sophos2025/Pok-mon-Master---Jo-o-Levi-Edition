@@ -10,258 +10,35 @@
         body { font-family: 'Segoe UI', sans-serif; background-color: #f0f0f0; margin: 0; padding: 10px; text-align: center; }
         .container { max-width: 500px; margin: auto; background: white; border: 4px solid var(--pk-blue); border-radius: 20px; padding: 15px; box-shadow: 0 10px 0 #ccc; }
         
-        h1 { font-family: 'Press Start 2P', cursive; font-size: 12px; color: var(--pk-dark-blue); margin: 15px 0; }
+        h1 { font-family: 'Press Start 2P', cursive; font-size: 11px; color: var(--pk-dark-blue); margin: 15px 0; line-height: 1.5; }
         .data-atual { font-size: 14px; font-weight: bold; color: #666; margin-bottom: 10px; }
+
+        /* Audio Control */
+        .audio-ctrl { background: var(--pk-blue); color: white; border: none; padding: 8px; border-radius: 50%; cursor: pointer; position: absolute; top: 20px; right: 20px; font-size: 18px; width: 40px; height: 40px; }
 
         /* Dashboard e Partner */
         .dashboard { background: #e3f2fd; padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 2px solid var(--pk-blue); position: relative; }
-        .partner-area { display: flex; align-items: center; justify-content: center; background: white; border-radius: 50%; width: 80px; height: 80px; margin: 0 auto 10px; border: 3px solid var(--pk-yellow); }
-        .partner-img { width: 60px; }
+        .partner-area { display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; border-radius: 15px; padding: 10px; margin: 0 auto 10px; border: 3px solid var(--pk-yellow); width: 120px; }
+        .partner-img { width: 80px; height: 80px; }
 
         .stat-row { margin: 10px 0; text-align: left; }
-        .label { font-weight: bold; font-size: 12px; display: block; margin-bottom: 5px; }
+        .label { font-weight: bold; font-size: 11px; display: block; margin-bottom: 5px; color: var(--pk-dark-blue); }
         .progress-bar-bg { background: #ddd; height: 18px; border-radius: 10px; overflow: hidden; border: 1px solid #999; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s; width: 0%; }
 
-        /* Lista de Tarefas */
-        .task-list { text-align: left; }
-        .task-item { background: #fff; padding: 12px; margin: 8px 0; border-radius: 10px; border-left: 5px solid var(--pk-yellow); display: flex; align-items: center; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); font-size: 14px;}
+        /* Timer */
+        .timer-box { background: #222; color: #0f0; padding: 10px; border-radius: 10px; font-family: 'Press Start 2P', cursive; margin: 15px 0; }
+        .timer-display { font-size: 20px; margin-bottom: 10px; }
+        .timer-controls { display: flex; justify-content: center; gap: 10px; }
+        .timer-btn { background: var(--pk-red); color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 8px; }
+        .reset-btn { background: #555; }
+
+        /* Task List */
+        .task-item { background: #fff; padding: 12px; margin: 8px 0; border-radius: 10px; border-left: 5px solid var(--pk-yellow); display: flex; align-items: center; text-align: left; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); font-size: 14px; }
         .task-item.checked { background: #e8f5e9; border-left-color: #4caf50; text-decoration: line-through; color: #777; }
-        input[type="checkbox"] { width: 22px; height: 22px; margin-right: 15px; }
+        input[type="checkbox"] { width: 22px; height: 22px; margin-right: 15px; cursor: pointer; }
 
-        /* Captura */
-        #capture-area { margin: 20px 0; display: none; padding: 15px; border: 2px dashed var(--pk-red); border-radius: 15px; background: #fff5f5; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
-        .pokeball-btn { width: 60px; cursor: pointer; transition: 0.3s; }
-        .pokeball-btn:hover { transform: rotate(20deg); }
-
-        /* Pokedex */
-        .pokedex { margin-top: 30px; border-top: 3px solid var(--pk-blue); padding-top: 15px; }
-        .pokedex h2 { font-family: 'Press Start 2P', cursive; font-size: 10px; }
-        .pokedex-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; background: #333; padding: 10px; border-radius: 10px; }
-        .pokedex-slot { background: #555; aspect-ratio: 1; border-radius: 5px; display: flex; align-items: center; justify-content: center; }
-        .pokedex-slot img { width: 100%; }
-
-        .timer-box { background: #222; color: #0f0; padding: 10px; border-radius: 10px; font-family: 'Press Start 2P', cursive; margin: 15px 0; font-size: 10px;}
-        .timer-btn { background: var(--pk-red); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 8px; margin-top: 5px;}
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg" width="120">
-    
-    <h1>MESTRE TREINADOR: JOÃO LEVI</h1>
-    <div class="data-atual" id="current-date"></div>
-
-    <div class="dashboard">
-        <div class="partner-area">
-            <img id="partner-img" class="partner-img" src="" alt="Parceiro">
-        </div>
-        <div style="font-size: 10px; font-family: 'Press Start 2P'; margin-bottom: 10px;">
-            STREAK: <span id="streak-count">0</span> DIAS
-        </div>
-
-        <div class="stat-row">
-            <span class="label">ENERGIA DIÁRIA</span>
-            <div class="progress-bar-bg"><div id="daily-bar" class="progress-fill"></div></div>
-        </div>
-        <div class="stat-row">
-            <span class="label">NÍVEL MENSAL (BÔNUS)</span>
-            <div class="progress-bar-bg"><div id="monthly-bar" class="progress-fill" style="background: var(--pk-blue)"></div></div>
-        </div>
-        <div style="display: flex; justify-content: space-around; font-weight: bold; font-size: 14px; color: var(--pk-dark-blue);">
-            <div>💰 R$ <span id="bonus-money">0.00</span></div>
-            <div>🎮 +<span id="bonus-time">0</span> min</div>
-        </div>
-    </div>
-
-    <!-- Área de Captura -->
-    <div id="capture-area">
-        <p style="font-family: 'Press Start 2P'; font-size: 8px; color: var(--pk-red);">UM POKÉMON SELVAGEM APARECEU!</p>
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" class="pokeball-btn" onclick="capturePokemon()">
-        <p style="font-size: 12px; font-weight: bold;">Clique para capturar!</p>
-    </div>
-
-    <div class="timer-box">
-        <div id="timer">15:00</div>
-        <button class="timer-btn" onclick="toggleTimer()" id="btn-timer">INICIAR TREINO (15min)</button>
-    </div>
-
-    <div id="task-list" class="task-list"></div>
-
-    <div class="pokedex">
-        <h2>MINHA POKÉDEX</h2>
-        <div id="pokedex-grid" class="pokedex-grid"></div>
-    </div>
-
-    <button onclick="resetDay()" style="margin-top:20px; font-size: 9px; opacity: 0.5;">Resetar Dia</button>
-</div>
-
-<script>
-    const TAREFAS_DIARIAS = ["Arrumar o quarto", "Ajudar a mamãe", "Arrumar os brinquedos", "Lição de casa", "Inglês - revisão", "Leitura", "Tabuada", "Caligrafia"];
-    const TAREFA_PIANO = "Tocar Piano (Ter/Qua/Qui)";
-    
-    let timerInterval, timeLeft = 15 * 60, timerRunning = false;
-
-    function getTodayKey() { return new Date().toLocaleDateString('pt-BR'); }
-
-    function setup() {
-        document.getElementById('current-date').innerText = getTodayKey();
-        updatePartner();
-        loadTasks();
-        renderPokedex();
-    }
-
-    function updatePartner() {
-        // Lógica de evolução baseada em streak de dias seguidos (simulada via localStorage)
-        let streak = parseInt(localStorage.getItem('streak') || 0);
-        document.getElementById('streak-count').innerText = streak;
-        
-        let pokeId = 4; // Charmander (Base)
-        if (streak >= 7) pokeId = 5; // Charmeleon
-        if (streak >= 14) pokeId = 6; // Charizard
-        
-        document.getElementById('partner-img').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeId}.png`;
-    }
-
-    function loadTasks() {
-        const today = getTodayKey();
-        const dayOfWeek = new Date().getDay();
-        const taskListDiv = document.getElementById('task-list');
-        
-        if (dayOfWeek === 0) {
-            taskListDiv.innerHTML = "🌟 DOMINGO: Dia de Descanso!";
-            updateDashboard(100);
-            return;
-        }
-
-        let currentTasks = [...TAREFAS_DIARIAS];
-        if ([2,3,4].includes(dayOfWeek)) currentTasks.push(TAREFA_PIANO);
-
-        let savedData = JSON.parse(localStorage.getItem(today)) || {};
-        let html = "";
-        let completedCount = 0;
-
-        currentTasks.forEach(task => {
-            const checked = savedData[task] ? 'checked' : '';
-            if(savedData[task]) completedCount++;
-            html += `<div class="task-item ${checked}">
-                <input type="checkbox" ${checked} onchange="toggleTask('${task}')">
-                <span>${task}</span>
-            </div>`;
-        });
-
-        taskListDiv.innerHTML = html;
-        let percent = (completedCount / currentTasks.length) * 100;
-        updateDashboard(percent);
-        checkCapture(percent);
-    }
-
-    function toggleTask(taskName) {
-        const today = getTodayKey();
-        let savedData = JSON.parse(localStorage.getItem(today)) || {};
-        savedData[taskName] = !savedData[taskName];
-        localStorage.setItem(today, JSON.stringify(savedData));
-        
-        // Se completou tudo agora, verifica se aumenta o streak
-        let currentTasks = [...TAREFAS_DIARIAS];
-        if ([2,3,4].includes(new Date().getDay())) currentTasks.push(TAREFA_PIANO);
-        let done = currentTasks.filter(t => savedData[t]).length;
-        
-        if (done === currentTasks.length) {
-            let lastStreakDate = localStorage.getItem('lastStreakDate');
-            if (lastStreakDate !== today) {
-                let s = parseInt(localStorage.getItem('streak') || 0);
-                localStorage.setItem('streak', s + 1);
-                localStorage.setItem('lastStreakDate', today);
-            }
-        }
-
-        loadTasks();
-        updatePartner();
-    }
-
-    function updateDashboard(dailyPercent) {
-        document.getElementById('daily-bar').style.width = dailyPercent + "%";
-        
-        // Cálculo mensal simplificado (últimos 30 dias)
-        let doneTotal = 0, possibleTotal = 0;
-        for(let i=0; i<30; i++) {
-            let d = new Date(); d.setDate(d.getDate() - i);
-            if(d.getDay() === 0) continue;
-            let key = d.toLocaleDateString('pt-BR');
-            let tasksCount = TAREFAS_DIARIAS.length + ([2,3,4].includes(d.getDay()) ? 1 : 0);
-            possibleTotal += tasksCount;
-            let data = JSON.parse(localStorage.getItem(key)) || {};
-            Object.values(data).forEach(v => { if(v) doneTotal++; });
-        }
-        
-        let monthlyPercent = (doneTotal / possibleTotal * 100) || 0;
-        document.getElementById('monthly-bar').style.width = monthlyPercent + "%";
-        
-        let bonusCash = monthlyPercent >= 50 ? (20 * (monthlyPercent/100)) : 0;
-        let bonusMin = monthlyPercent >= 50 ? (30 * (monthlyPercent/100)) : 0;
-        document.getElementById('bonus-money').innerText = bonusCash.toFixed(2);
-        document.getElementById('bonus-time').innerText = Math.round(bonusMin);
-    }
-
-    function checkCapture(percent) {
-        const today = getTodayKey();
-        const capturedToday = localStorage.getItem('captured_' + today);
-        if (percent === 100 && !capturedToday) {
-            document.getElementById('capture-area').style.display = 'block';
-        } else {
-            document.getElementById('capture-area').style.display = 'none';
-        }
-    }
-
-    function capturePokemon() {
-        const randomId = Math.floor(Math.random() * 151) + 1;
-        let myPokedex = JSON.parse(localStorage.getItem('myPokedex') || "[]");
-        if (!myPokedex.includes(randomId)) myPokedex.push(randomId);
-        
-        localStorage.setItem('myPokedex', JSON.stringify(myPokedex));
-        localStorage.setItem('captured_' + getTodayKey(), 'true');
-        
-        alert("Parabéns! Você capturou um Pokémon ID #" + randomId);
-        document.getElementById('capture-area').style.display = 'none';
-        renderPokedex();
-    }
-
-    function renderPokedex() {
-        let myPokedex = JSON.parse(localStorage.getItem('myPokedex') || "[]");
-        const grid = document.getElementById('pokedex-grid');
-        grid.innerHTML = "";
-        // Cria 10 slots na galeria
-        for(let i=0; i<15; i++) {
-            let id = myPokedex[i];
-            grid.innerHTML += `<div class="pokedex-slot">
-                ${id ? `<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png">` : ''}
-            </div>`;
-        }
-    }
-
-    function toggleTimer() {
-        if (timerRunning) { clearInterval(timerInterval); document.getElementById('btn-timer').innerText = "CONTINUAR"; }
-        else {
-            timerInterval = setInterval(() => {
-                timeLeft--; updateTimerDisplay();
-                if (timeLeft <= 0) { clearInterval(timerInterval); alert("Tempo esgotado!"); timeLeft = 15*60; }
-            }, 1000);
-            document.getElementById('btn-timer').innerText = "PAUSAR";
-        }
-        timerRunning = !timerRunning;
-    }
-
-    function updateTimerDisplay() {
-        const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
-        document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-    }
-
-    function resetDay() { if(confirm("Resetar?")) { localStorage.removeItem(getTodayKey()); localStorage.removeItem('captured_'+getTodayKey()); loadTasks(); } }
-
-    setup();
-</script>
-</body>
-</html>
+        /* Capture & Pokedex */
+        #capture-area { margin: 20px 0; display: none; padding: 15px; border: 4px solid var(--pk-red); border-radius: 15px; background: #fff; animation: bounce 1s infinite; }
+        @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-5px);} }
+        .pokedex-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; background: #333; padding: 10px; border-radius: 10px; min-height: 50px; }
