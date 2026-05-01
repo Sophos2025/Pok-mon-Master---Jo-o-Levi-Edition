@@ -1,0 +1,312 @@
+code
+Html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Task - João Levi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pk-yellow: #FFCB05;
+            --pk-blue: #2A75BB;
+            --pk-red: #EF5350;
+            --pk-dark-blue: #3c5aa6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            border: 4px solid var(--pk-blue);
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 10px 0 #ccc;
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: var(--pk-dark-blue);
+            margin: 20px 0;
+        }
+
+        /* Dashboards */
+        .dashboard {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            border: 2px solid var(--pk-blue);
+        }
+
+        .stat-row { margin: 10px 0; }
+        .label { font-weight: bold; font-size: 14px; display: block; margin-bottom: 5px; }
+
+        .progress-bar-bg {
+            background: #ddd;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #999;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            transition: width 0.5s;
+        }
+
+        .bonus-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            font-weight: bold;
+            color: var(--pk-dark-blue);
+        }
+
+        /* Tarefas */
+        .task-list { text-align: left; margin-bottom: 20px; }
+        .task-item {
+            background: #fff;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border-left: 5px solid var(--pk-yellow);
+            display: flex;
+            align-items: center;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .task-item.checked { background: #e8f5e9; border-left-color: #4caf50; text-decoration: line-through; color: #777; }
+        input[type="checkbox"] { width: 22px; height: 22px; margin-right: 15px; cursor: pointer; }
+
+        /* Cronômetro */
+        .timer-box {
+            background: #222;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Press Start 2P', cursive;
+            margin-bottom: 20px;
+        }
+        .timer-display { font-size: 20px; margin-bottom: 10px; }
+        .timer-btn {
+            background: var(--pk-red);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+        }
+
+        .day-msg { font-weight: bold; color: var(--pk-red); margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="pokemon-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg" width="150" alt="Pokemon">
+    </div>
+    
+    <h1>Painel do Treinador João Levi</h1>
+
+    <!-- Dashboard Visual -->
+    <div class="dashboard">
+        <div class="stat-row">
+            <span class="label">Energia do Dia (Progresso Diário)</span>
+            <div class="progress-bar-bg">
+                <div id="daily-bar" class="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="stat-row">
+            <span class="label">Nível de Treinador (Meta Mensal)</span>
+            <div class="progress-bar-bg">
+                <div id="monthly-bar" class="progress-fill" style="width: 0%; background: var(--pk-blue)"></div>
+            </div>
+        </div>
+
+        <div class="bonus-info">
+            <div>💰 R$ <span id="bonus-money">0.00</span></div>
+            <div>🎮 +<span id="bonus-time">0</span> min</div>
+        </div>
+    </div>
+
+    <!-- Cronômetro -->
+    <div class="timer-box">
+        <div class="timer-display" id="timer">15:00</div>
+        <button class="timer-btn" onclick="toggleTimer()" id="btn-timer">INICIAR TREINO (15min)</button>
+    </div>
+
+    <div id="day-info" class="day-msg"></div>
+
+    <!-- Lista de Tarefas -->
+    <div id="task-list" class="task-list"></div>
+
+    <button onclick="resetDay()" style="background:none; border:none; color: gray; text-decoration: underline; font-size: 10px; cursor:pointer;">Reiniciar Dia (Manual)</button>
+</div>
+
+<script>
+    const NOME_FILHO = "João Levi";
+    const TAREFAS_DIARIAS = ["Arrumar o quarto", "Ajudar a mamãe", "Arrumar os brinquedos", "Lição de casa", "Inglês - revisão", "Leitura", "Tabuada", "Caligrafia"];
+    const TAREFA_PIANO = "Tocar Piano (Ter/Qua/Qui)";
+    
+    let timerInterval;
+    let timeLeft = 15 * 60;
+    let timerRunning = false;
+
+    function getTodayKey() {
+        const d = new Date();
+        return d.toISOString().split('T')[0];
+    }
+
+    function isPianoDay() {
+        const day = new Date().getDay();
+        return day === 2 || day === 3 || day === 4; // Terça, Quarta, Quinta
+    }
+
+    function isSunday() {
+        return new Date().getDay() === 0;
+    }
+
+    function loadTasks() {
+        const today = getTodayKey();
+        const dayOfWeek = new Date().getDay();
+        const taskListDiv = document.getElementById('task-list');
+        const dayInfo = document.getElementById('day-info');
+        
+        if (isSunday()) {
+            dayInfo.innerHTML = "🌟 DOMINGO: Dia Livre de Descanso! Aproveite!";
+            taskListDiv.innerHTML = "";
+            updateDashboard();
+            return;
+        }
+
+        dayInfo.innerHTML = "📅 Tarefas de Hoje:";
+        let tasksHtml = "";
+        let currentTasks = [...TAREFAS_DIARIAS];
+        if (isPianoDay()) currentTasks.push(TAREFA_PIANO);
+
+        let savedData = JSON.parse(localStorage.getItem(today)) || {};
+
+        currentTasks.forEach((task, index) => {
+            const checked = savedData[task] ? 'checked' : '';
+            tasksHtml += `
+                <div class="task-item ${checked}">
+                    <input type="checkbox" ${checked} onchange="toggleTask('${task}')">
+                    <span>${task}</span>
+                </div>
+            `;
+        });
+        taskListDiv.innerHTML = tasksHtml;
+        updateDashboard();
+    }
+
+    function toggleTask(taskName) {
+        const today = getTodayKey();
+        let savedData = JSON.parse(localStorage.getItem(today)) || {};
+        savedData[taskName] = !savedData[taskName];
+        localStorage.setItem(today, JSON.stringify(savedData));
+        loadTasks();
+    }
+
+    function updateDashboard() {
+        const today = getTodayKey();
+        const dayOfWeek = new Date().getDay();
+        if (dayOfWeek === 0) { // Domingo mostra bônus acumulado
+            document.getElementById('daily-bar').style.width = "100%";
+        }
+
+        // Cálculo Diário
+        let currentTasks = [...TAREFAS_DIARIAS];
+        if (isPianoDay()) currentTasks.push(TAREFA_PIANO);
+        let savedData = JSON.parse(localStorage.getItem(today)) || {};
+        let completedToday = currentTasks.filter(t => savedData[t]).length;
+        let dailyPercent = (completedToday / currentTasks.length) * 100;
+        document.getElementById('daily-bar').style.width = dailyPercent + "%";
+
+        // Cálculo Mensal (Simplificado: últimos 30 dias)
+        let totalPossible = 0;
+        let totalDone = 0;
+        for (let i = 0; i < 30; i++) {
+            let d = new Date();
+            d.setDate(d.getDate() - i);
+            if (d.getDay() === 0) continue; // Pula domingos no cálculo
+
+            let key = d.toISOString().split('T')[0];
+            let dayTasks = [...TAREFAS_DIARIAS];
+            let dow = d.getDay();
+            if (dow === 2 || dow === 3 || dow === 4) dayTasks.push(TAREFA_PIANO);
+
+            totalPossible += dayTasks.length;
+            let data = JSON.parse(localStorage.getItem(key)) || {};
+            dayTasks.forEach(t => { if(data[t]) totalDone++; });
+        }
+
+        let monthlyPercent = (totalDone / totalPossible) * 100 || 0;
+        document.getElementById('monthly-bar').style.width = monthlyPercent + "%";
+
+        // Cálculo de Bônus (Proporcional acima de 50%)
+        let bonusCash = 0;
+        let bonusMin = 0;
+        if (monthlyPercent >= 50) {
+            bonusCash = (20 * (monthlyPercent / 100));
+            bonusMin = (30 * (monthlyPercent / 100));
+        }
+
+        document.getElementById('bonus-money').innerText = bonusCash.toFixed(2);
+        document.getElementById('bonus-time').innerText = Math.round(bonusMin);
+    }
+
+    // Cronômetro
+    function toggleTimer() {
+        if (timerRunning) {
+            clearInterval(timerInterval);
+            document.getElementById('btn-timer').innerText = "CONTINUAR TREINO";
+        } else {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Treino Concluído! Bom trabalho!");
+                    timeLeft = 15 * 60;
+                }
+            }, 1000);
+            document.getElementById('btn-timer').innerText = "PAUSAR";
+        }
+        timerRunning = !timerRunning;
+    }
+
+    function updateTimerDisplay() {
+        const m = Math.floor(timeLeft / 60);
+        const s = timeLeft % 60;
+        document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function resetDay() {
+        if(confirm("Deseja desmarcar as tarefas de hoje?")) {
+            localStorage.removeItem(getTodayKey());
+            loadTasks();
+        }
+    }
+
+    loadTasks();
+</script>
+
+</body>
+</html>
