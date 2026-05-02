@@ -94,88 +94,70 @@
         <h2 style="font-family: 'Press Start 2P'; font-size: 9px; color: var(--pk-dark-blue);">📔 POKÉDEX</h2>
         <div id="pokedex-grid" class="pokedex-grid"></div>
     </div>
-
-    <div style="margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 10px;">
-        <button onclick="if(confirm('Isso vai apagar sua Pokédex e progresso! Tem certeza?')){localStorage.clear(); location.reload();}" style="font-size: 8px; background: none; border: 1px solid #ccc; color: #999; padding: 5px; cursor: pointer; border-radius: 5px;">Reiniciar Toda a Jornada</button>
-    </div>
 </div>
 
-<!-- Audios -->
 <audio id="bg-music" loop src="https://play.pokemonshowdown.com/audio/music/gsc-gameboyplayer.mp3"></audio>
 <audio id="sound-capture" src="https://www.myinstants.com/media/sounds/pokemon-capture.mp3"></audio>
 <audio id="sound-level" src="https://www.myinstants.com/media/sounds/level-up-pokemon.mp3"></audio>
 
 <script>
-    // Configurações e Variáveis
     const TAREFAS_DIARIAS = ["Arrumar o quarto", "Ajudar a mamãe", "Arrumar os brinquedos", "Lição de casa", "Inglês - revisão", "Leitura", "Tabuada", "Caligrafia"];
     const TAREFA_PIANO = "Tocar Piano (🎹)";
-    const STARTERS = [[4,5,6], [1,2,3], [7,8,9]]; // Charmander, Bulbasaur, Squirtle
+    const STARTERS = [[4,5,6], [1,2,3], [7,8,9]];
 
     let timerInterval, timeLeft = 15 * 60, timerRunning = false;
 
-    // Função Inicial
+    // AQUI ESTÁ A CORREÇÃO: Terça(2), Quinta(4) e Sábado(6)
+    function checkPianoDay(dayNumber) {
+        return [2, 4, 6].includes(dayNumber);
+    }
+
     function setup() {
         const d = new Date();
         const opcoes = { weekday: 'long', day: 'numeric', month: 'long' };
         document.getElementById('current-date').innerText = d.toLocaleDateString('pt-BR', opcoes);
-        
         updatePartner();
         loadTasks();
         renderPokedex();
     }
 
-    // Gerenciamento de Música
     function toggleMusic() {
         const music = document.getElementById('bg-music');
         const btn = document.getElementById('music-btn');
-        if (music.paused) {
-            music.play().catch(e => console.log("Erro ao tocar música: ", e));
-            btn.innerText = "🔊";
-        } else {
-            music.pause();
-            btn.innerText = "🔈";
-        }
+        if (music.paused) { music.play().catch(e=>{}); btn.innerText = "🔊"; }
+        else { music.pause(); btn.innerText = "🔈"; }
     }
 
-    // Evolução e Streak
     function updatePartner() {
         let streak = parseInt(localStorage.getItem('streak') || 0);
         let cycle = parseInt(localStorage.getItem('cycle') || 0) % 3;
         document.getElementById('streak-count').innerText = streak;
-
-        let stage = 0;
-        if (streak >= 7) stage = 1;
-        if (streak >= 14) stage = 2;
+        let stage = streak >= 14 ? 2 : (streak >= 7 ? 1 : 0);
         
         if (streak >= 21) {
-            alert("21 DIAS! Incrível João Levi! Você completou um ciclo e ganhou uma insígnia! Vamos começar com um novo Pokémon!");
+            alert("21 DIAS! Incrível João Levi! Você completou um ciclo! Novo Pokémon aparecendo!");
             localStorage.setItem('streak', 0);
             localStorage.setItem('cycle', cycle + 1);
-            location.reload();
-            return;
+            location.reload(); return;
         }
-
         const pokeId = STARTERS[cycle][stage];
         document.getElementById('partner-img').src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokeId + ".png";
-        
         const names = {1:"Bulbasaur", 2:"Ivysaur", 3:"Venusaur", 4:"Charmander", 5:"Charmeleon", 6:"Charizard", 7:"Squirtle", 8:"Wartortle", 9:"Blastoise"};
         document.getElementById('partner-name').innerText = names[pokeId] || "Pokémon";
     }
 
-    // Carregar Lista
     function loadTasks() {
         const today = new Date().toLocaleDateString('pt-BR');
         const dayOfWeek = new Date().getDay(); 
         const taskListDiv = document.getElementById('task-list');
 
         if (dayOfWeek === 0) {
-            taskListDiv.innerHTML = "<div style='padding:20px; color:orange; font-family:\"Press Start 2P\"; font-size:10px;'>DOMINGO LIVRE! APROVEITE SEU DESCANSO! 🎮</div>";
-            updateDashboard(100);
-            return;
+            taskListDiv.innerHTML = "<div style='padding:20px; color:orange; font-family:\"Press Start 2P\"; font-size:10px;'>DOMINGO LIVRE! DESCANSO! 🎮</div>";
+            updateDashboard(100); return;
         }
 
         let tasksParaHoje = [...TAREFAS_DIARIAS];
-        if ([2,3,4].includes(dayOfWeek)) tasksParaHoje.push(TAREFA_PIANO);
+        if (checkPianoDay(dayOfWeek)) tasksParaHoje.push(TAREFA_PIANO);
 
         let dadosSalvos = JSON.parse(localStorage.getItem(today) || "{}");
         let concluidas = 0;
@@ -207,116 +189,86 @@
         dados[nome] = !dados[nome];
         localStorage.setItem(hoje, JSON.stringify(dados));
 
-        // Lógica de Streak
         const dayOfWeek = new Date().getDay();
         let tasksParaHoje = [...TAREFAS_DIARIAS];
-        if ([2,3,4].includes(dayOfWeek)) tasksParaHoje.push(TAREFA_PIANO);
+        if (checkPianoDay(dayOfWeek)) tasksParaHoje.push(TAREFA_PIANO);
         
-        let todasConcluidas = tasksParaHoje.every(t => dados[t]);
-
-        if (todasConcluidas) {
+        if (tasksParaHoje.every(t => dados[t])) {
             if (localStorage.getItem('lastDoneDate') !== hoje) {
                 let s = parseInt(localStorage.getItem('streak') || 0) + 1;
                 localStorage.setItem('streak', s);
                 localStorage.setItem('lastDoneDate', hoje);
-                if (s === 7 || s === 14) {
-                    document.getElementById('sound-level').play().catch(e=>{});
-                }
+                if (s === 7 || s === 14) document.getElementById('sound-level').play().catch(e=>{});
             }
         }
-        
-        loadTasks();
-        updatePartner();
+        loadTasks(); updatePartner();
     }
 
     function updateDashboard(dailyP) {
         document.getElementById('daily-bar').style.width = dailyP + "%";
-        
-        // Cálculo Mensal
         let totalFeito = 0, totalPossivel = 0;
         for(let i=0; i<30; i++) {
             let d = new Date(); d.setDate(d.getDate() - i);
             if(d.getDay() === 0) continue;
             let key = d.toLocaleDateString('pt-BR');
-            let qtasTasks = TAREFAS_DIARIAS.length + ([2,3,4].includes(d.getDay()) ? 1 : 0);
+            let qtasTasks = TAREFAS_DIARIAS.length + (checkPianoDay(d.getDay()) ? 1 : 0);
             totalPossivel += qtasTasks;
             let data = JSON.parse(localStorage.getItem(key) || "{}");
             Object.values(data).forEach(v => { if(v) totalFeito++; });
         }
-        
         let monthP = (totalFeito / totalPossivel * 100) || 0;
         document.getElementById('monthly-bar').style.width = monthP + "%";
-        
         let cash = monthP >= 50 ? (20 * (monthP/100)) : 0;
         let mins = monthP >= 50 ? (30 * (monthP/100)) : 0;
         document.getElementById('bonus-money').innerText = cash.toFixed(2);
         document.getElementById('bonus-time').innerText = Math.round(mins);
     }
 
-    // Pokédex e Captura
     function capturePokemon() {
         try { document.getElementById('sound-capture').play(); } catch(e) {}
         const pokeId = Math.floor(Math.random() * 151) + 1;
-        let dex = JSON.parse(localStorage.getItem('pokedex_v2') || "[]");
+        let dex = JSON.parse(localStorage.getItem('pokedex_v3') || "[]");
         if(!dex.includes(pokeId)) dex.push(pokeId);
-        localStorage.setItem('pokedex_v2', JSON.stringify(dex));
+        localStorage.setItem('pokedex_v3', JSON.stringify(dex));
         localStorage.setItem('cap_' + new Date().toLocaleDateString('pt-BR'), 'true');
-        
         alert("GOTCHA! Você capturou um Pokémon ID #" + pokeId);
         document.getElementById('capture-area').style.display = 'none';
         renderPokedex();
     }
 
     function renderPokedex() {
-        let dex = JSON.parse(localStorage.getItem('pokedex_v2') || "[]");
+        let dex = JSON.parse(localStorage.getItem('pokedex_v3') || "[]");
         const grid = document.getElementById('pokedex-grid');
         grid.innerHTML = "";
         let slots = Math.max(10, dex.length + 1);
         for(let i=0; i<slots; i++) {
-            grid.innerHTML += '<div class="pokedex-slot">' + 
-                (dex[i] ? '<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + dex[i] + '.png">' : '') + 
-                '</div>';
+            grid.innerHTML += '<div class="pokedex-slot">' + (dex[i] ? '<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + dex[i] + '.png">' : '') + '</div>';
         }
     }
 
-    // Cronômetro
     function toggleTimer() {
-        const btn = document.getElementById('btn-timer');
-        if(timerRunning) { 
-            clearInterval(timerInterval); 
-            btn.innerText = "VOLTAR"; 
-        } else {
+        if(timerRunning) { clearInterval(timerInterval); document.getElementById('btn-timer').innerText = "VOLTAR"; } 
+        else {
             timerInterval = setInterval(() => {
-                timeLeft--; 
-                updateTimerDisplay();
-                if(timeLeft <= 0) { 
-                    clearInterval(timerInterval); 
-                    alert("Tempo esgotado! Bom trabalho!"); 
-                    resetTimer(); 
-                }
+                timeLeft--; updateTimerDisplay();
+                if(timeLeft <= 0) { clearInterval(timerInterval); alert("Tempo esgotado!"); resetTimer(); }
             }, 1000);
-            btn.innerText = "PAUSAR";
+            document.getElementById('btn-timer').innerText = "PAUSAR";
         }
         timerRunning = !timerRunning;
     }
 
     function resetTimer() {
-        clearInterval(timerInterval);
-        timerRunning = false;
-        timeLeft = 15 * 60;
-        updateTimerDisplay();
-        document.getElementById('btn-timer').innerText = "INICIAR";
+        clearInterval(timerInterval); timerRunning = false; timeLeft = 15 * 60;
+        updateTimerDisplay(); document.getElementById('btn-timer').innerText = "INICIAR";
     }
 
     function updateTimerDisplay() {
-        const m = Math.floor(timeLeft / 60);
-        const s = timeLeft % 60;
+        const m = Math.floor(timeLeft / 60); const s = timeLeft % 60;
         document.getElementById('timer').innerText = m + ":" + (s < 10 ? '0' : '') + s;
     }
 
-    // Iniciar tudo ao carregar a página
     window.onload = setup;
 </script>
-
 </body>
 </html>
