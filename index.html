@@ -23,6 +23,11 @@
         .progress-bar-bg { background: #ddd; height: 18px; border-radius: 10px; overflow: hidden; border: 1px solid #999; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s; width: 0%; }
 
+        /* Domingo Especial */
+        #sunday-banner { display: none; background: #fffde7; border: 3px solid var(--pk-yellow); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .sunday-charizard { width: 100px; animation: jump 0.6s infinite alternate; }
+        @keyframes jump { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+
         /* Timer */
         .timer-box { background: #222; color: #0f0; padding: 10px; border-radius: 10px; font-family: 'Press Start 2P', cursive; margin: 15px 0; }
         .timer-display { font-size: 20px; margin-bottom: 10px; }
@@ -47,12 +52,7 @@
         .pokedex-slot { background: #555; border-radius: 5px; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .pokedex-slot img { width: 100%; }
         
-        #capture-area { display: none; background: #fff5f5; border: 3px dashed var(--pk-red); padding: 15px; border-radius: 15px; margin: 15px 0; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.03);} 100% {transform: scale(1);} }
-
-        /* Domingo Especial */
-        .sunday-banner { display: none; background: #fffde7; border: 2px solid var(--pk-yellow); border-radius: 15px; padding: 10px; margin-bottom: 15px; }
-        .sunday-charizard { width: 100px; }
+        #capture-area { display: none; background: #fff5f5; border: 3px dashed var(--pk-red); padding: 15px; border-radius: 15px; margin: 15px 0; }
     </style>
 </head>
 <body>
@@ -64,10 +64,13 @@
     <h1>MESTRE TREINADOR:<br>JOÃO LEVI</h1>
     <div class="data-atual" id="current-date"></div>
 
-    <!-- Banner de Domingo -->
-    <div id="sunday-banner" class="sunday-banner">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueG54bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/H99r2H6iC4L54u3F8X/giphy.gif" class="sunday-charizard" alt="Charizard Gamer">
-        <p style="font-family: 'Press Start 2P'; font-size: 8px; color: #e67e22;">DOMINGO DE LAZER!<br>DIVIRTA-SE!</p>
+    <!-- Banner de Domingo Corrigido -->
+    <div id="sunday-banner">
+        <div style="position: relative;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" class="sunday-charizard" alt="Charizard">
+            <span style="position: absolute; bottom: 0; right: 20%; font-size: 30px;">🎮</span>
+        </div>
+        <p style="font-family: 'Press Start 2P'; font-size: 8px; color: #e67e22; margin-top: 10px;">DOMINGO DE LAZER!<br>DIVIRTA-SE, JOÃO!</p>
     </div>
 
     <div class="dashboard">
@@ -93,7 +96,7 @@
 
     <div id="capture-area">
         <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" width="50" style="cursor:pointer" onclick="capturePokemon()">
-        <p style="font-size: 11px; font-weight: bold; color: var(--pk-red);">MISSAO DE LAZER COMPLETA!<br>PEGUE SEU POKÉMON!</p>
+        <p style="font-size: 11px; font-weight: bold; color: var(--pk-red);">MISSÃO CONCLUÍDA!<br>PEGUE SEU POKÉMON!</p>
     </div>
 
     <div class="timer-box" id="timer-container">
@@ -110,7 +113,6 @@
     </div>
 </div>
 
-<!-- Modal Cartinha -->
 <div class="modal" id="modal-card" onclick="if(event.target == this) closeCard()">
     <div class="card">
         <div class="card-header" id="card-title">INFO POKÉMON</div>
@@ -131,7 +133,6 @@
     const TAREFA_PIANO = "Tocar Piano (🎹)";
     const STARTERS = [[4,5,6], [1,2,3], [7,8,9]];
     const POKEMONS_BASE = [1, 4, 7, 10, 13, 16, 19, 21, 23, 25, 27, 29, 32, 35, 37, 39, 41, 43, 46, 48, 50, 52, 54, 56, 58, 60, 63, 66, 69, 72, 74, 77, 79, 81, 83, 84, 86, 88, 90, 92, 95, 96, 98, 100, 102, 104, 106, 107, 108, 109, 111, 113, 114, 115, 116, 118, 120, 122, 123, 124, 125, 126, 127, 128, 129, 131, 132, 133, 137, 138, 140, 142, 143, 147];
-
     const TYPE_MAP = { fire:"Fogo", water:"Água", grass:"Planta", electric:"Elétrico", psychic:"Psíquico", ice:"Gelo", dragon:"Dragão", dark:"Sombrio", fairy:"Fada", normal:"Normal", fighting:"Lutador", flying:"Voador", poison:"Veneno", ground:"Terra", rock:"Pedra", bug:"Inseto", ghost:"Fantasma", steel:"Aço" };
     const TYPE_COLORS = { fire:"#F08030", water:"#6890F0", grass:"#78C850", electric:"#F8D030", psychic:"#F85888", ice:"#98D8D8", dragon:"#7038F8", dark:"#705848", fairy:"#EE99AC", normal:"#A8A878", fighting:"#C03028", flying:"#A890F0", poison:"#A040A0", ground:"#E0C068", rock:"#B8A038", bug:"#A8B820", ghost:"#705898", steel:"#B8B8D0" };
 
@@ -144,12 +145,11 @@
         
         if(dow === 0) {
             document.getElementById('sunday-banner').style.display = 'block';
-            document.getElementById('timer-container').style.display = 'none'; // Não precisa de cronômetro no domingo
+            document.getElementById('timer-container').style.display = 'none';
         } else {
             document.getElementById('sunday-banner').style.display = 'none';
             document.getElementById('timer-container').style.display = 'block';
         }
-
         updatePartner();
         loadTasks();
         renderPokedex();
@@ -193,23 +193,11 @@
             const data = await resp.json();
             const typeResp = await fetch(data.types[0].type.url);
             const typeData = await typeResp.json();
-
             const vant = typeData.damage_relations.double_damage_to.map(t => `<span class="info-tag" style="background:${TYPE_COLORS[t.name]}">${TYPE_MAP[t.name]}</span>`).join('') || "Nenhuma";
             const fraq = typeData.damage_relations.double_damage_from.map(t => `<span class="info-tag" style="background:${TYPE_COLORS[t.name]}">${TYPE_MAP[t.name]}</span>`).join('') || "Nenhuma";
             const tipos = data.types.map(t => `<span class="info-tag" style="background:${TYPE_COLORS[t.type.name]}">${TYPE_MAP[t.type.name]}</span>`).join('');
-
-            content.innerHTML = `
-                <div style="font-weight:bold; font-size:16px; margin-bottom:5px;">${data.name.toUpperCase()}</div>
-                <div style="margin-bottom:10px;">${tipos}</div>
-                <div class="section-title">VANTAGEM CONTRA:</div><div class="attr-list">${vant}</div>
-                <div class="section-title">FRAQUEZA CONTRA:</div><div class="attr-list">${fraq}</div>
-                <div class="section-title">ATRIBUTOS:</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; font-size:11px; gap:3px; margin-top:5px;">
-                    <div>ATAQUE: ${data.stats[1].base_stat}</div><div>DEFESA: ${data.stats[2].base_stat}</div>
-                    <div>VIDA: ${data.stats[0].base_stat}</div><div>VELOC: ${data.stats[5].base_stat}</div>
-                </div>
-            `;
-        } catch (e) { content.innerHTML = "Erro ao carregar dados."; }
+            content.innerHTML = `<div style="font-weight:bold; font-size:16px; margin-bottom:5px;">${data.name.toUpperCase()}</div><div style="margin-bottom:10px;">${tipos}</div><div class="section-title">VANTAGEM:</div><div class="attr-list">${vant}</div><div class="section-title">FRAQUEZA:</div><div class="attr-list">${fraq}</div><div class="section-title">ATRIBUTOS:</div><div style="display:grid; grid-template-columns:1fr 1fr; font-size:11px; gap:3px; margin-top:5px;"><div>ATA: ${data.stats[1].base_stat}</div><div>DEF: ${data.stats[2].base_stat}</div><div>VIDA: ${data.stats[0].base_stat}</div><div>VEL: ${data.stats[5].base_stat}</div></div>`;
+        } catch (e) { content.innerHTML = "Erro ao carregar."; }
     }
 
     function closeCard() { document.getElementById('modal-card').style.display = 'none'; }
@@ -218,15 +206,8 @@
         const today = new Date().toLocaleDateString('pt-BR');
         const dow = new Date().getDay();
         const div = document.getElementById('task-list');
-        
-        let tasks = [];
-        if (dow === 0) {
-            tasks = [...TAREFAS_DOMINGO];
-        } else {
-            tasks = [...TAREFAS_DIARIAS];
-            if ([2,4,6].includes(dow)) tasks.push(TAREFA_PIANO);
-        }
-
+        let tasks = (dow === 0) ? [...TAREFAS_DOMINGO] : [...TAREFAS_DIARIAS];
+        if (dow !== 0 && [2,4,6].includes(dow)) tasks.push(TAREFA_PIANO);
         let saved = JSON.parse(localStorage.getItem(today) || "{}");
         let html = ""; let done = 0;
         tasks.forEach(t => {
@@ -243,11 +224,9 @@
         const hoje = new Date().toLocaleDateString('pt-BR');
         let d = JSON.parse(localStorage.getItem(hoje) || "{}");
         d[name] = !d[name]; localStorage.setItem(hoje, JSON.stringify(d));
-        
         const dow = new Date().getDay();
         let tasks = (dow === 0) ? [...TAREFAS_DOMINGO] : [...TAREFAS_DIARIAS];
         if (dow !== 0 && [2,4,6].includes(dow)) tasks.push(TAREFA_PIANO);
-
         if (tasks.every(t => d[t])) {
             if (localStorage.getItem('joao_levi_lastDone') !== hoje) {
                 let s = parseInt(localStorage.getItem('joao_levi_streak') || 0) + 1;
@@ -299,10 +278,7 @@
         else {
             timerInterval = setInterval(() => { 
                 timeLeft--; updateTimerDisplay(); 
-                if(timeLeft <= 0) { 
-                    clearInterval(timerInterval); document.getElementById('sound-timer').play().catch(e=>{});
-                    alert("TEMPO CONCLUÍDO! BOM TRABALHO!"); resetTimer(); 
-                } 
+                if(timeLeft <= 0) { clearInterval(timerInterval); document.getElementById('sound-timer').play().catch(e=>{}); alert("TEMPO CONCLUÍDO!"); resetTimer(); } 
             }, 1000);
             document.getElementById('btn-timer').innerText = "PAUSAR";
         }
