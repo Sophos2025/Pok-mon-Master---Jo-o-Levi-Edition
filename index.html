@@ -17,12 +17,9 @@
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .coin-display { background: #333; color: var(--pk-gold); padding: 5px 12px; border-radius: 20px; font-family: 'Press Start 2P', cursive; font-size: 9px; border: 2px solid var(--pk-gold); }
         .audio-ctrl { background: var(--pk-blue); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
-        
-        /* Badges Corrigidas */
-        .badge-case { display: flex; justify-content: center; gap: 4px; background: #444; padding: 10px; border-radius: 10px; margin-bottom: 15px; border: 2px solid #222; }
-        .badge { width: 35px; height: 35px; filter: grayscale(100%); opacity: 0.2; transition: 0.5s; object-fit: contain; }
+        .badge-case { display: flex; justify-content: center; gap: 4px; background: #444; padding: 8px; border-radius: 10px; margin-bottom: 15px; border: 2px solid #222; }
+        .badge { width: 32px; height: 32px; filter: grayscale(100%); opacity: 0.2; transition: 0.5s; }
         .badge.unlocked { filter: grayscale(0%); opacity: 1; transform: scale(1.1); }
-        
         .dashboard { background: #e3f2fd; padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--theme-color); position: relative; }
         .partner-area { display: flex; flex-direction: column; align-items: center; background: white; border-radius: 15px; padding: 10px; margin: 0 auto 10px; border: 3px solid var(--pk-yellow); width: 100px; height: 100px; }
         .partner-img { width: 80px; height: 80px; object-fit: contain; }
@@ -31,30 +28,27 @@
         .progress-bar-bg { background: #ddd; height: 16px; border-radius: 8px; overflow: hidden; border: 1px solid #999; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s; width: 0%; }
         .bonus-box { display: flex; justify-content: space-around; background: white; padding: 8px; border-radius: 10px; font-weight: bold; font-size: 13px; color: var(--pk-dark-blue); margin-top: 10px; border: 1px solid #ddd; }
-        
         #booster-area { display: none; background: linear-gradient(135deg, #6a11cb, #2575fc); padding: 15px; border-radius: 15px; border: 4px solid var(--pk-gold); cursor: pointer; animation: glow 2s infinite; margin-bottom: 15px; color: white; }
         @keyframes glow { 0%, 100% { box-shadow: 0 0 5px var(--pk-gold); } 50% { box-shadow: 0 0 20px var(--pk-gold); } }
-        
         .timer-box { background: #222; color: #0f0; padding: 10px; border-radius: 10px; font-family: 'Press Start 2P', cursive; margin: 15px 0; }
         .timer-display { font-size: 18px; margin-bottom: 8px; }
         .timer-btn { background: var(--pk-red); color: white; border: none; padding: 6px 10px; border-radius: 5px; font-family: 'Press Start 2P', cursive; font-size: 8px; cursor: pointer; }
-        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; padding: 10px; }
         .card { background: #fdf6e3; width: 100%; max-width: 300px; border-radius: 15px; border: 8px solid var(--pk-yellow); padding: 15px; box-sizing: border-box; }
         .card-img-box { background: white; border-radius: 10px; border: 2px solid #ddd; margin-bottom: 10px; display: flex; justify-content: center; }
-        .card-img { width: 180px; height: 180px; object-fit: contain; }
-        .info-tag { display: inline-block; padding: 3px 8px; border-radius: 5px; font-size: 10px; font-weight: bold; color: white; margin: 2px; text-transform: uppercase; }
-
+        .card-img { width: 160px; height: 160px; object-fit: contain; }
+        .info-tag { display: inline-block; padding: 3px 8px; border-radius: 5px; font-size: 11px; font-weight: bold; color: white; margin: 2px; text-transform: uppercase; }
         .section-title { font-family: 'Press Start 2P', cursive; font-size: 8px; color: var(--pk-dark-blue); text-align: left; margin: 20px 0 10px; }
         .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; background: #333; padding: 8px; border-radius: 10px; min-height: 50px; }
-        .slot { background: #555; border-radius: 5px; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; }
-        .slot img { width: 110%; height: 110%; object-fit: contain; }
-
+        .slot { background: #555; border-radius: 5px; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .slot img { width: 90%; height: 90%; object-fit: contain; }
         .pokeball-particle { position: fixed; width: 25px; height: 25px; background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png'); background-size: contain; pointer-events: none; z-index: 3000; transition: 1s ease-out; }
         .task-item { background: #fff; padding: 12px; margin: 8px 0; border-radius: 10px; border-left: 5px solid var(--pk-yellow); display: flex; align-items: center; text-align: left; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
         .task-item.checked { background: #e8f5e9; border-left-color: #4caf50; opacity: 0.8; }
         input[type="checkbox"] { width: 22px; height: 22px; margin-right: 15px; }
         #sunday-banner { display: none; background: #fffde7; border: 2px solid var(--pk-yellow); border-radius: 15px; padding: 10px; margin-bottom: 15px; }
+        .charizard-jump { width: 80px; animation: jump 0.6s infinite alternate; }
+        @keyframes jump { from { transform: translateY(0); } to { transform: translateY(-10px); } }
     </style>
 </head>
 <body>
@@ -70,25 +64,28 @@
     <div class="data-atual" id="current-date"></div>
 
     <div class="badge-case">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/1.png" class="badge" id="badge-1" title="Rocha">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/2.png" class="badge" id="badge-2" title="Cascata">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/3.png" class="badge" id="badge-3" title="Trovão">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/4.png" class="badge" id="badge-4" title="Arco-Íris">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/5.png" class="badge" id="badge-5" title="Alma">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/6.png" class="badge" id="badge-6" title="Pântano">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/7.png" class="badge" id="badge-7" title="Vulcão">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/8.png" class="badge" id="badge-8" title="Terra">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/1.png" class="badge" id="badge-1">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/2.png" class="badge" id="badge-2">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/3.png" class="badge" id="badge-3">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/4.png" class="badge" id="badge-4">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/5.png" class="badge" id="badge-5">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/6.png" class="badge" id="badge-6">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/7.png" class="badge" id="badge-7">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/8.png" class="badge" id="badge-8">
     </div>
 
     <div id="sunday-banner">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" style="width:70px; animation: jump 0.6s infinite alternate;">
-        <p style="font-family: 'Press Start 2P'; font-size: 7px; color: #e67e22; margin-top: 5px;">DOMINGO DE LAZER!</p>
+        <div style="position: relative;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" class="charizard-jump">
+            <span style="position: absolute; bottom: 0; right: 20%; font-size: 30px;">🎮</span>
+        </div>
+        <p style="font-family: 'Press Start 2P'; font-size: 7px; color: #e67e22; margin-top: 10px;">DOMINGO DE LAZER!</p>
     </div>
 
     <div class="dashboard">
         <div class="partner-area">
             <span id="partner-name" style="font-size: 7px; font-family: 'Press Start 2P'; margin-bottom: 5px;">...</span>
-            <img id="partner-img" class="partner-img" src="">
+            <img id="partner-img" class="partner-img" src="" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
         </div>
         <div style="font-size: 9px; font-family: 'Press Start 2P'; margin-bottom: 10px;">STREAK: <span id="streak-count">0</span> DIAS 🔥</div>
         <div class="stat-row"><span class="label">ENERGIA DO DIA</span><div class="progress-bar-bg"><div id="daily-bar" class="progress-fill"></div></div></div>
@@ -96,47 +93,21 @@
         <div class="bonus-box"><div>💰 R$ <span id="bonus-money">0.00</span></div><div>🎮 +<span id="bonus-time">0</span> min</div></div>
     </div>
 
-    <div id="booster-area" onclick="openBooster()"><p style="font-family: 'Press Start 2P'; font-size: 8px;">🎁 BOOSTER PACK SURPRESA!</p><p style="font-size: 10px;">Clique para abrir 6 cartas raras!</p></div>
-    
-    <div id="capture-area" style="display:none; padding:10px; border:3px dashed var(--pk-red); border-radius:15px; margin-bottom:10px;">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" width="40" style="cursor:pointer" onclick="capturePokemon()">
-        <p style="font-size:11px; font-weight:bold; color:var(--pk-red);">MISSÃO CONCLUÍDA! PEGUE O POKÉMON!</p>
-    </div>
-
+    <div id="booster-area" onclick="openBooster()"><p style="font-family: 'Press Start 2P'; font-size: 9px;">🎁 BOOSTER PACK SURPRESA!</p><p style="font-size: 11px;">Clique para abrir 6 cartas raras!</p></div>
+    <div id="capture-area" style="display:none; padding:10px; border:3px dashed var(--pk-red); border-radius:15px; margin-bottom:10px;"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" width="40" style="cursor:pointer" onclick="capturePokemon()"><p style="font-size:11px; font-weight:bold; color:var(--pk-red);">MISSÃO CONCLUÍDA! PEGUE O POKÉMON!</p></div>
     <div class="timer-box" id="timer-container"><div class="timer-display" id="timer">15:00</div><button class="timer-btn" onclick="toggleTimer()" id="btn-timer">INICIAR</button><button class="timer-btn" onclick="resetTimer()" style="background:#555">↻</button></div>
-    
     <div id="task-list"></div>
 
     <div class="section-title">🏆 HALL DA FAMA (PARCEIROS)</div>
     <div id="hall-grid" class="grid" style="background: linear-gradient(45deg, #ffd700, #b8860b); border: 2px solid gold;"></div>
-
     <div class="section-title">⭐ COLEÇÃO RARA (BOOSTERS)</div>
     <div id="rare-grid" class="grid"></div>
-
     <div class="section-title">📔 POKÉDEX COMUM</div>
     <div id="pokedex-grid" class="grid"></div>
 </div>
 
-<!-- Modais -->
-<div class="modal" id="modal-card" onclick="if(event.target == this) closeCard()">
-    <div class="card">
-        <div id="card-header-title" style="font-family: 'Press Start 2P'; font-size: 9px; margin-bottom: 10px;">INFO POKÉMON</div>
-        <div class="card-img-box"><img src="" id="card-img" class="card-img"></div>
-        <div id="card-content" style="text-align: left;"></div>
-        <button onclick="closeCard()" style="width:100%; padding:10px; margin-top:10px; background:var(--pk-red); color:white; border:none; border-radius:5px; font-family:'Press Start 2P'; font-size:8px; cursor:pointer;">FECHAR</button>
-    </div>
-</div>
-
-<div class="modal" id="shop-modal">
-    <div class="card" style="background:white;">
-        <h2 style="font-family:'Press Start 2P'; font-size:10px;">POKÉ-LOJA</h2>
-        <button onclick="buyTheme('#2A75BB', 0)" style="background:#2A75BB; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Azul (Grátis)</button>
-        <button onclick="buyTheme('#EF5350', 200)" style="background:#EF5350; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Vermelho (200💰)</button>
-        <button onclick="buyTheme('#4caf50', 500)" style="background:#4caf50; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Verde (500💰)</button>
-        <button onclick="buyTheme('#9c27b0', 1000)" style="background:#9c27b0; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Roxo (1000💰)</button>
-        <button onclick="document.getElementById('shop-modal').style.display='none'" style="margin-top:10px; background:#ccc; border:none; padding:10px; width:100%; border-radius:5px;">VOLTAR</button>
-    </div>
-</div>
+<div class="modal" id="modal-card" onclick="if(event.target == this) closeCard()"><div class="card"><div id="card-header-title" style="font-family: 'Press Start 2P'; font-size: 9px; margin-bottom: 10px;">INFO POKÉMON</div><div class="card-img-box"><img src="" id="card-img" class="card-img" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'"></div><div id="card-content" style="text-align: left;"></div><button onclick="closeCard()" style="width:100%; padding:10px; margin-top:10px; background:var(--pk-red); color:white; border:none; border-radius:5px; font-family:'Press Start 2P'; font-size:8px; cursor:pointer;">FECHAR</button></div></div>
+<div class="modal" id="shop-modal"><div class="card" style="background:white;"><h2 style="font-family:'Press Start 2P'; font-size:10px;">POKÉ-LOJA</h2><button onclick="buyTheme('#2A75BB', 0)" style="background:#2A75BB; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Azul (Grátis)</button><button onclick="buyTheme('#EF5350', 200)" style="background:#EF5350; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Vermelho (200💰)</button><button onclick="buyTheme('#4caf50', 500)" style="background:#4caf50; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Verde (500💰)</button><button onclick="buyTheme('#9c27b0', 1000)" style="background:#9c27b0; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Roxo (1000💰)</button><button onclick="document.getElementById('shop-modal').style.display='none'" style="margin-top:10px; background:#ccc; border:none; padding:10px; width:100%; border-radius:5px;">VOLTAR</button></div></div>
 
 <audio id="bg-music" loop src="https://play.pokemonshowdown.com/audio/music/gsc-gameboyplayer.mp3"></audio>
 <audio id="sound-capture" src="https://www.myinstants.com/media/sounds/pokemon-capture.mp3"></audio>
@@ -170,6 +141,15 @@
         if (total - lastB >= 15 || !localStorage.getItem('booster_ja_aberto')) document.getElementById('booster-area').style.display='block';
 
         loadTasks(); renderPokedex(); updatePartner();
+    }
+
+    // FUNÇÃO PARA GARANTIR QUE IMAGENS BUGADAS TENHAM FALLBACK
+    function getPokeImg(id) {
+        return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+    }
+    function getFallbackImg(imgElement, id) {
+        imgElement.onerror = null;
+        imgElement.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
     }
 
     function toggleTask(name) {
@@ -236,7 +216,7 @@
         localStorage.setItem('joao_levi_last_booster', localStorage.getItem('joao_levi_total_days'));
         let rareDex = JSON.parse(localStorage.getItem('joao_levi_pokedex_RARE') || "[]");
         for(let i=0; i<6; i++) { 
-            let id = Math.floor(Math.random()*649)+1; // Pega qualquer pokemon até a 5ª geração
+            let id = Math.floor(Math.random()*649)+1;
             if(!rareDex.includes(id)) rareDex.push(id); 
         }
         localStorage.setItem('joao_levi_pokedex_RARE', JSON.stringify(rareDex));
@@ -249,7 +229,9 @@
         modal.style.display = 'flex'; content.innerHTML = "Buscando dados...";
         try {
             const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`); const data = await resp.json();
-            img.src = data.sprites.other['official-artwork'].front_default;
+            img.src = getPokeImg(id);
+            img.onerror = () => getFallbackImg(img, id);
+            
             const typeResp = await fetch(data.types[0].type.url); const typeData = await typeResp.json();
             const vant = typeData.damage_relations.double_damage_to.map(t => `<span class="info-tag" style="background:${TYPE_COLORS[t.name]}">${TYPE_MAP[t.name]}</span>`).join('') || "Nenhuma";
             const fraq = typeData.damage_relations.double_damage_from.map(t => `<span class="info-tag" style="background:${TYPE_COLORS[t.name]}">${TYPE_MAP[t.name]}</span>`).join('') || "Nenhuma";
@@ -309,7 +291,9 @@
         if (stage > lastS) { showPokemonCard(STARTERS[cycle][stage], "EVOLUIU!"); document.getElementById('sound-level').play().catch(()=>{}); }
         localStorage.setItem('joao_levi_lastStage', stage);
         const pId = STARTERS[cycle][stage];
-        document.getElementById('partner-img').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pId}.png`;
+        const pImg = document.getElementById('partner-img');
+        pImg.src = getPokeImg(pId);
+        pImg.onerror = () => getFallbackImg(pImg, pId);
         const names = {1:"Bulbasaur", 2:"Ivysaur", 3:"Venusaur", 4:"Charmander", 5:"Charmeleon", 6:"Charizard", 7:"Squirtle", 8:"Wartortle", 9:"Blastoise"};
         document.getElementById('partner-name').innerText = names[pId] || "Parceiro";
     }
@@ -320,9 +304,9 @@
         let hall = JSON.parse(localStorage.getItem('joao_levi_HALL_FAMA') || "[]");
         const cG = document.getElementById('pokedex-grid'); const rG = document.getElementById('rare-grid'); const hG = document.getElementById('hall-grid');
         cG.innerHTML = ""; rG.innerHTML = ""; hG.innerHTML = "";
-        comm.forEach(id => { cG.innerHTML += `<div class="slot" onclick="showPokemonCard('${id}')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png"></div>`; });
-        rare.forEach(id => { rG.innerHTML += `<div class="slot" onclick="showPokemonCard('${id}')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png"></div>`; });
-        hall.forEach(id => { hG.innerHTML += `<div class="slot" onclick="showPokemonCard('${id}', 'HALL DA FAMA')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png"></div>`; });
+        comm.forEach(id => { cG.innerHTML += `<div class="slot" onclick="showPokemonCard('${id}')"><img src="${getPokeImg(id)}" onerror="getFallbackImg(this, ${id})"></div>`; });
+        rare.forEach(id => { rG.innerHTML += `<div class="slot" onclick="showPokemonCard('${id}')"><img src="${getPokeImg(id)}" onerror="getFallbackImg(this, ${id})"></div>`; });
+        hall.forEach(id => { hG.innerHTML += `<div class="slot" onclick="showPokemonCard('${id}', 'HALL DA FAMA')"><img src="${getPokeImg(id)}" onerror="getFallbackImg(this, ${id})"></div>`; });
     }
 
     function toggleTimer() { if(timerRunning) { clearInterval(timerInterval); document.getElementById('btn-timer').innerText = "VOLTAR"; } else { timerInterval = setInterval(() => { timeLeft--; updateTimerDisplay(); if(timeLeft <= 0) { clearInterval(timerInterval); document.getElementById('sound-timer').play().catch(()=>{}); alert("TEMPO CONCLUÍDO!"); resetTimer(); } }, 1000); document.getElementById('btn-timer').innerText = "PAUSAR"; } timerRunning = !timerRunning; }
