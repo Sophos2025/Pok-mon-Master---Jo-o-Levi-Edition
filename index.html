@@ -6,166 +6,141 @@
     <title>Pokémon Master - João Levi</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --pk-yellow: #FFCB05; --pk-blue: #2A75BB; --pk-red: #EF5350; 
-            --pk-dark-blue: #3c5aa6; --pk-gold: #ffd700; --theme-color: #2A75BB; 
-        }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f0f0; margin: 0; padding: 10px; text-align: center; }
-        
-        /* Container com cor dinâmica do Shop */
-        .container { 
-            max-width: 500px; margin: auto; background: white; 
-            border: 4px solid var(--theme-color); border-radius: 20px; 
-            padding: 15px; box-shadow: 0 10px 0 #ccc; min-height: 90vh; position: relative; 
-        }
-        
+        :root { --pk-yellow: #FFCB05; --pk-blue: #2A75BB; --pk-red: #EF5350; --pk-dark-blue: #3c5aa6; --pk-gold: #ffd700; --theme-color: #2A75BB; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f0f0; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
+        .container { max-width: 500px; margin: auto; background: white; border: 4px solid var(--theme-color); border-radius: 20px; padding: 15px; box-shadow: 0 10px 0 #ccc; min-height: 90vh; position: relative; }
         h1 { font-family: 'Press Start 2P', cursive; font-size: 10px; color: var(--pk-dark-blue); margin: 15px 0; }
-        .data-atual { font-size: 14px; font-weight: bold; color: #666; margin-bottom: 10px; }
-        
-        .dashboard { background: #e3f2fd; padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--theme-color); }
-        
-        /* Moedas e Shop */
-        .coin-display { background: #333; color: var(--pk-gold); padding: 8px 15px; border-radius: 20px; font-family: 'Press Start 2P', cursive; font-size: 10px; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 10px; border: 2px solid var(--pk-gold); }
-        .shop-btn { background: var(--pk-gold); border: none; padding: 5px 10px; border-radius: 5px; font-family: 'Press Start 2P', cursive; font-size: 8px; cursor: pointer; }
-
-        /* Insígnias */
-        .badge-case { display: flex; justify-content: center; gap: 5px; background: #444; padding: 10px; border-radius: 10px; margin: 10px 0; border: 2px solid #222; }
-        .badge { width: 35px; height: 35px; filter: grayscale(100%); opacity: 0.3; transition: 0.5s; }
+        .data-atual { font-size: 14px; font-weight: bold; color: #666; margin-bottom: 10px; text-transform: capitalize; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .coin-display { background: #333; color: var(--pk-gold); padding: 5px 12px; border-radius: 20px; font-family: 'Press Start 2P', cursive; font-size: 9px; border: 2px solid var(--pk-gold); }
+        .audio-ctrl { background: var(--pk-blue); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
+        .badge-case { display: flex; justify-content: center; gap: 4px; background: #444; padding: 8px; border-radius: 10px; margin-bottom: 15px; border: 2px solid #222; }
+        .badge { width: 32px; height: 32px; filter: grayscale(100%); opacity: 0.2; transition: 0.5s; }
         .badge.unlocked { filter: grayscale(0%); opacity: 1; transform: scale(1.1); }
-
-        /* Booster */
-        #booster-area { display: none; margin: 15px 0; padding: 15px; background: linear-gradient(135deg, #6a11cb, #2575fc); border-radius: 15px; color: white; border: 4px solid var(--pk-gold); cursor: pointer; animation: glow 2s infinite; }
+        .dashboard { background: #e3f2fd; padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--theme-color); position: relative; }
+        .partner-area { display: flex; flex-direction: column; align-items: center; background: white; border-radius: 15px; padding: 10px; margin: 0 auto 10px; border: 3px solid var(--pk-yellow); width: 100px; height: 100px; }
+        .partner-img { width: 80px; height: 80px; object-fit: contain; }
+        .stat-row { margin: 8px 0; text-align: left; }
+        .label { font-weight: bold; font-size: 10px; color: var(--pk-dark-blue); display: block; margin-bottom: 4px; }
+        .progress-bar-bg { background: #ddd; height: 16px; border-radius: 8px; overflow: hidden; border: 1px solid #999; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s; width: 0%; }
+        .bonus-box { display: flex; justify-content: space-around; background: white; padding: 8px; border-radius: 10px; font-weight: bold; font-size: 13px; color: var(--pk-dark-blue); margin-top: 10px; border: 1px solid #ddd; }
+        #booster-area { display: none; background: linear-gradient(135deg, #6a11cb, #2575fc); padding: 15px; border-radius: 15px; border: 4px solid var(--pk-gold); cursor: pointer; animation: glow 2s infinite; margin-bottom: 15px; color: white; }
         @keyframes glow { 0%, 100% { box-shadow: 0 0 5px var(--pk-gold); } 50% { box-shadow: 0 0 20px var(--pk-gold); } }
-
-        /* Tasks */
-        .task-item { background: #fff; padding: 12px; margin: 8px 0; border-radius: 10px; border-left: 5px solid var(--pk-yellow); display: flex; align-items: center; text-align: left; }
+        .timer-box { background: #222; color: #0f0; padding: 10px; border-radius: 10px; font-family: 'Press Start 2P', cursive; margin: 15px 0; }
+        .timer-display { font-size: 18px; margin-bottom: 8px; }
+        .timer-btn { background: var(--pk-red); color: white; border: none; padding: 6px 10px; border-radius: 5px; font-family: 'Press Start 2P', cursive; font-size: 8px; cursor: pointer; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; padding: 10px; }
+        .card { background: #fdf6e3; width: 100%; max-width: 300px; border-radius: 15px; border: 8px solid var(--pk-yellow); padding: 15px; box-sizing: border-box; }
+        .card-img-box { background: white; border-radius: 10px; border: 2px solid #ddd; margin-bottom: 10px; }
+        .card-img { width: 160px; height: 160px; }
+        .info-tag { display: inline-block; padding: 3px 8px; border-radius: 5px; font-size: 11px; font-weight: bold; color: white; margin: 2px; text-transform: uppercase; }
+        #sunday-banner { display: none; background: #fffde7; border: 2px solid var(--pk-yellow); border-radius: 15px; padding: 10px; margin-bottom: 15px; }
+        .charizard-jump { width: 80px; animation: jump 0.6s infinite alternate; }
+        @keyframes jump { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+        .section-title { font-family: 'Press Start 2P', cursive; font-size: 8px; color: var(--pk-dark-blue); text-align: left; margin: 20px 0 10px; }
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; background: #333; padding: 8px; border-radius: 10px; min-height: 50px; }
+        .slot { background: #555; border-radius: 5px; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .slot img { width: 100%; }
+        .pokeball-particle { position: fixed; width: 25px; height: 25px; background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png'); background-size: contain; pointer-events: none; z-index: 3000; transition: 1s ease-out; }
+        .task-item { background: #fff; padding: 12px; margin: 8px 0; border-radius: 10px; border-left: 5px solid var(--pk-yellow); display: flex; align-items: center; text-align: left; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
         .task-item.checked { background: #e8f5e9; border-left-color: #4caf50; opacity: 0.8; }
         input[type="checkbox"] { width: 22px; height: 22px; margin-right: 15px; }
-
-        .pokedex-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; background: #333; padding: 10px; border-radius: 10px; }
-        .pokedex-slot { background: #555; border-radius: 5px; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .pokedex-slot img { width: 100%; }
-
-        /* Modais */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
-        .card { background: #fdf6e3; width: 300px; border-radius: 15px; border: 10px solid var(--pk-yellow); padding: 15px; }
-        .shop-modal { background: white; padding: 20px; border-radius: 20px; width: 280px; border: 5px solid var(--pk-gold); }
-        
-        .pokeball-particle { position: fixed; width: 25px; height: 25px; background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png'); background-size: contain; pointer-events: none; z-index: 2000; transition: 1s ease-out; }
     </style>
 </head>
-<body id="main-body">
+<body>
 
 <div class="container" id="app-container">
-    <div class="coin-display">💰 <span id="coin-count">0</span> <button class="shop-btn" onclick="openShop()">LOJA</button></div>
+    <div class="top-bar">
+        <div class="coin-display">💰 <span id="coin-count">0</span></div>
+        <button class="audio-ctrl" onclick="toggleMusic()" id="music-btn">🔈</button>
+        <button class="timer-btn" style="background:var(--pk-gold); color:#333" onclick="openShop()">LOJA</button>
+    </div>
     
     <h1>MESTRE JOÃO LEVI</h1>
     <div class="data-atual" id="current-date"></div>
 
-    <!-- ESTOJO DE INSÍGNIAS -->
-    <div class="badge-case" id="badge-case">
-        <!-- IDs das Insígnias de Kanto -->
-        <img src="https://archives.bulbagarden.org/media/upload/d/dd/Boulder_Badge.png" class="badge" id="badge-1" title="Insígnia da Rocha">
-        <img src="https://archives.bulbagarden.org/media/upload/a/af/Cascade_Badge.png" class="badge" id="badge-2" title="Insígnia da Cascata">
-        <img src="https://archives.bulbagarden.org/media/upload/c/c8/Thunder_Badge.png" class="badge" id="badge-3" title="Insígnia do Trovão">
-        <img src="https://archives.bulbagarden.org/media/upload/b/b5/Rainbow_Badge.png" class="badge" id="badge-4" title="Insígnia do Arco-Íris">
-        <img src="https://archives.bulbagarden.org/media/upload/7/7d/Soul_Badge.png" class="badge" id="badge-5" title="Insígnia da Alma">
-        <img src="https://archives.bulbagarden.org/media/upload/6/6b/Marsh_Badge.png" class="badge" id="badge-6" title="Insígnia do Pântano">
-        <img src="https://archives.bulbagarden.org/media/upload/0/08/Volcano_Badge.png" class="badge" id="badge-7" title="Insígnia do Vulcão">
-        <img src="https://archives.bulbagarden.org/media/upload/7/78/Earth_Badge.png" class="badge" id="badge-8" title="Insígnia da Terra">
+    <div class="badge-case">
+        <img src="https://archives.bulbagarden.org/media/upload/thumb/d/dd/Boulder_Badge.png/50px-Boulder_Badge.png" class="badge" id="badge-1">
+        <img src="https://archives.bulbagarden.org/media/upload/thumb/a/af/Cascade_Badge.png/50px-Cascade_Badge.png" class="badge" id="badge-2">
+        <img src="https://archives.bulbagarden.org/media/upload/thumb/c/c8/Thunder_Badge.png/50px-Thunder_Badge.png" class="badge" id="badge-3">
+        <img src="https://archives.bulbagarden.org/media/upload/thumb/b/b5/Rainbow_Badge.png/50px-Rainbow_Badge.png" class="badge" id="badge-4">
+        <img src="https://archives.bulbagarden.org/media/upload/thumb/7/7d/Soul_Badge.png/50px-Soul_Badge.png" class="badge" id="badge-5">
+        <img src="https://archives.bulbagarden.org/media/upload/thumb/6/6b/Marsh_Badge.png/50px-Marsh_Badge.png" class="badge" id="badge-6">
+        <img src="https://archives.bulbagarden.org/media/upload/thumb/0/08/Volcano_Badge.png/50px-Volcano_Badge.png" class="badge" id="badge-7">
+        <img src="https://archives.bulbagarden.org/media/upload/thumb/7/78/Earth_Badge.png/50px-Earth_Badge.png" class="badge" id="badge-8">
+    </div>
+
+    <div id="sunday-banner">
+        <div style="position: relative;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" class="charizard-jump">
+            <span style="position: absolute; bottom: 0; right: 20%; font-size: 30px;">🎮</span>
+        </div>
+        <p style="font-family: 'Press Start 2P'; font-size: 7px; color: #e67e22; margin-top: 10px;">DOMINGO DE LAZER!</p>
     </div>
 
     <div class="dashboard">
-        <div style="font-size: 9px; font-family: 'Press Start 2P'; margin-bottom:10px;">NÍVEL MENSAL: <span id="monthly-text">0</span>%</div>
-        <div style="background: #ddd; height: 12px; border-radius: 6px; overflow: hidden;"><div id="monthly-bar" style="height:100%; background: var(--pk-blue); width: 0%"></div></div>
+        <div class="partner-area">
+            <span id="partner-name" style="font-size: 7px; font-family: 'Press Start 2P'; margin-bottom: 5px;">...</span>
+            <img id="partner-img" class="partner-img" src="">
+        </div>
+        <div style="font-size: 9px; font-family: 'Press Start 2P'; margin-bottom: 10px;">STREAK: <span id="streak-count">0</span> DIAS 🔥</div>
+        <div class="stat-row"><span class="label">ENERGIA DO DIA</span><div class="progress-bar-bg"><div id="daily-bar" class="progress-fill"></div></div></div>
+        <div class="stat-row"><span class="label">NÍVEL MENSAL (BÔNUS)</span><div class="progress-bar-bg"><div id="monthly-bar" class="progress-fill" style="background: var(--pk-blue)"></div></div></div>
+        <div class="bonus-box"><div>💰 R$ <span id="bonus-money">0.00</span></div><div>🎮 +<span id="bonus-time">0</span> min</div></div>
     </div>
 
-    <div id="booster-area" onclick="openBooster()">
-        <p style="font-family: 'Press Start 2P'; font-size: 9px;">🎁 BOOSTER PACK DISPONÍVEL!</p>
-        <p style="font-size: 11px;">Clique para rasgar e ganhar 6 cartas!</p>
-    </div>
-
-    <div id="capture-area" style="display:none; padding:10px; border:3px dashed var(--pk-red); border-radius:15px; margin-bottom:10px;">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" width="40" style="cursor:pointer" onclick="capturePokemon()">
-        <p style="font-size:11px; font-weight:bold;">MISSÃO CONCLUÍDA! PEGUE O POKÉMON!</p>
-    </div>
-
+    <div id="booster-area" onclick="openBooster()"><p style="font-family: 'Press Start 2P'; font-size: 9px;">🎁 BOOSTER PACK SURPRESA!</p><p style="font-size: 11px;">Clique para abrir 6 cartas raras!</p></div>
+    <div id="capture-area" style="display:none; padding:10px; border:3px dashed var(--pk-red); border-radius:15px; margin-bottom:10px;"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" width="40" style="cursor:pointer" onclick="capturePokemon()"><p style="font-size:11px; font-weight:bold; color:var(--pk-red);">MISSÃO CONCLUÍDA! PEGUE O POKÉMON!</p></div>
+    <div class="timer-box" id="timer-container"><div class="timer-display" id="timer">15:00</div><button class="timer-btn" onclick="toggleTimer()" id="btn-timer">INICIAR</button><button class="timer-btn" onclick="resetTimer()" style="background:#555">↻</button></div>
     <div id="task-list"></div>
 
-    <div style="margin-top: 20px; text-align: left;">
-        <h2 style="font-family: 'Press Start 2P'; font-size: 8px; color: var(--pk-dark-blue);">📔 POKÉDEX</h2>
-        <div id="pokedex-grid" class="pokedex-grid"></div>
-    </div>
+    <div class="section-title">🏆 HALL DA FAMA (PARCEIROS)</div>
+    <div id="hall-grid" class="grid" style="background: linear-gradient(45deg, #ffd700, #b8860b); border: 2px solid gold;"></div>
+
+    <div class="section-title">⭐ COLEÇÃO RARA (BOOSTERS)</div>
+    <div id="rare-grid" class="grid"></div>
+
+    <div class="section-title">📔 POKÉDEX COMUM</div>
+    <div id="pokedex-grid" class="grid"></div>
 </div>
 
-<!-- MODAL LOJA -->
-<div class="modal" id="shop-modal">
-    <div class="shop-modal">
-        <h2 style="font-family:'Press Start 2P'; font-size:10px;">POKÉ-LOJA</h2>
-        <p style="font-size:11px;">Mude a cor do seu App:</p>
-        <button onclick="buyTheme('#2A75BB', 0)" style="background:#2A75BB; color:white; padding:10px; margin:5px; border:none; border-radius:5px;">Azul (Grátis)</button>
-        <button onclick="buyTheme('#EF5350', 200)" style="background:#EF5350; color:white; padding:10px; margin:5px; border:none; border-radius:5px;">Vermelho (200💰)</button>
-        <button onclick="buyTheme('#4caf50', 500)" style="background:#4caf50; color:white; padding:10px; margin:5px; border:none; border-radius:5px;">Verde (500💰)</button>
-        <button onclick="buyTheme('#9c27b0', 1000)" style="background:#9c27b0; color:white; padding:10px; margin:5px; border:none; border-radius:5px;">Roxo (1000💰)</button>
-        <br><br>
-        <button onclick="document.getElementById('shop-modal').style.display='none'" style="font-family:'Press Start 2P'; font-size:8px;">SAIR</button>
-    </div>
-</div>
-
-<div class="modal" id="modal-card" onclick="if(event.target == this) closeCard()">
-    <div class="card" id="pokemon-card-visual">
-        <div id="card-content"></div>
-        <button onclick="closeCard()" style="width:100%; padding:10px; margin-top:10px; background:var(--pk-red); color:white; border:none; border-radius:5px; font-family:'Press Start 2P'; font-size:8px;">FECHAR</button>
-    </div>
-</div>
+<div class="modal" id="modal-card" onclick="if(event.target == this) closeCard()"><div class="card"><div id="card-header-title" style="font-family: 'Press Start 2P'; font-size: 9px; margin-bottom: 10px;">INFO POKÉMON</div><div class="card-img-box"><img src="" id="card-img" class="card-img"></div><div id="card-content" style="text-align: left;"></div><button onclick="closeCard()" style="width:100%; padding:10px; margin-top:10px; background:var(--pk-red); color:white; border:none; border-radius:5px; font-family:'Press Start 2P'; font-size:8px;">FECHAR</button></div></div>
+<div class="modal" id="shop-modal"><div class="card" style="background:white;"><h2 style="font-family:'Press Start 2P'; font-size:10px;">POKÉ-LOJA</h2><button onclick="buyTheme('#2A75BB', 0)" style="background:#2A75BB; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Azul (Grátis)</button><button onclick="buyTheme('#EF5350', 200)" style="background:#EF5350; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Vermelho (200💰)</button><button onclick="buyTheme('#4caf50', 500)" style="background:#4caf50; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Verde (500💰)</button><button onclick="buyTheme('#9c27b0', 1000)" style="background:#9c27b0; color:white; width:100%; margin:5px 0; border:none; border-radius:5px; padding:8px;">Roxo (1000💰)</button><button onclick="document.getElementById('shop-modal').style.display='none'" style="margin-top:10px; background:#ccc; border:none; padding:10px; width:100%; border-radius:5px;">VOLTAR</button></div></div>
 
 <audio id="bg-music" loop src="https://play.pokemonshowdown.com/audio/music/gsc-gameboyplayer.mp3"></audio>
 <audio id="sound-capture" src="https://www.myinstants.com/media/sounds/pokemon-capture.mp3"></audio>
 <audio id="sound-booster" src="https://www.myinstants.com/media/sounds/rip-paper.mp3"></audio>
 <audio id="sound-coin" src="https://www.myinstants.com/media/sounds/super-mario-coin.mp3"></audio>
+<audio id="sound-timer" src="https://www.myinstants.com/media/sounds/pokemon-recovery-sound.mp3"></audio>
+<audio id="sound-level" src="https://www.myinstants.com/media/sounds/level-up-pokemon.mp3"></audio>
 
 <script>
     const TAREFAS_DIARIAS = ["Arrumar o quarto", "Ajudar a mamãe", "Arrumar os brinquedos", "Lição de casa", "Inglês - revisão", "Leitura", "Tabuada", "Caligrafia"];
     const TAREFAS_DOMINGO = ["Arrumar o quarto (🧹)", "Jogar Playstation (🎮)", "Brincar e se divertir (🎈)", "Assistir TV (📺)", "Ser feliz (🌟)"];
+    const TAREFA_PIANO = "Tocar Piano (🎹)";
+    const STARTERS = [[4,5,6], [1,2,3], [7,8,9]];
     const POKEMONS_BASE = [1, 4, 7, 10, 13, 16, 19, 21, 23, 25, 27, 29, 32, 35, 37, 39, 41, 43, 46, 48, 50, 52, 54, 56, 58, 60, 63, 66, 69, 72, 74, 77, 79, 81, 83, 84, 86, 88, 90, 92, 95, 96, 98, 100, 102, 104, 106, 107, 108, 109, 111, 113, 114, 115, 116, 118, 120, 122, 123, 124, 125, 126, 127, 128, 129, 131, 132, 133, 137, 138, 140, 142, 143, 147];
-    const DINO_POKEMON = [
-        { id: "d1", name: "Tyrannovolt", type: "Elétrico", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/697.png" },
-        { id: "d2", name: "Triceleaf", type: "Planta", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/699.png" },
-        { id: "d3", name: "Pterostorm", type: "Voador", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/142.png" },
-        { id: "d4", name: "Brontoguard", type: "Rocha", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/698.png" },
-        { id: "d5", name: "Raptorshadow", type: "Fantasma", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/461.png" },
-        { id: "d6", name: "Spinosurge", type: "Água", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/395.png" }
-    ];
+    const DINO_POKEMON = [{id:"d1",name:"Tyrannovolt",type:"Elétrico/Dragão",hp:120,atk:150,def:80,vel:90,img:"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/697.png",desc:"Rei dos dinos elétricos!"},{id:"d2",name:"Triceleaf",type:"Planta/Aço",hp:140,atk:90,def:160,vel:40,img:"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/699.png",desc:"Escudo natural!"},{id:"d3",name:"Pterostorm",type:"Voador/Gelo",hp:80,atk:110,def:70,vel:140,img:"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/142.png",desc:"Mestre dos céus!"},{id:"d4",name:"Brontoguard",type:"Terra/Rocha",hp:200,atk:80,def:120,vel:30,img:"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/698.png",desc:"Gigante colossal!"},{id:"d5",name:"Raptorshadow",type:"Fantasma/Noturno",hp:70,atk:130,def:60,vel:150,img:"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/461.png",desc:"Rápido como sombra!"},{id:"d6",name:"Spinosurge",type:"Água/Aço",hp:110,atk:120,def:100,vel:80,img:"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/395.png",desc:"Predador dos mares!"}];
+    const TYPE_MAP = { fire:"Fogo", water:"Água", grass:"Planta", electric:"Elétrico", psychic:"Psíquico", ice:"Gelo", dragon:"Dragão", dark:"Sombrio", fairy:"Fada", normal:"Normal", fighting:"Lutador", flying:"Voador", poison:"Veneno", ground:"Terra", rock:"Pedra", bug:"Inseto", ghost:"Fantasma", steel:"Aço" };
+    const TYPE_COLORS = { fire:"#F08030", water:"#6890F0", grass:"#78C850", electric:"#F8D030", psychic:"#F85888", ice:"#98D8D8", dragon:"#7038F8", dark:"#705848", fairy:"#EE99AC", normal:"#A8A878", fighting:"#C03028", flying:"#A890F0", poison:"#A040A0", ground:"#E0C068", rock:"#B8A038", bug:"#A8B820", ghost:"#705898", steel:"#B8B8D0" };
+
+    let timerInterval, timeLeft = 15 * 60, timerRunning = false;
 
     function setup() {
-        const d = new Date();
+        const d = new Date(); const dow = d.getDay();
         document.getElementById('current-date').innerText = d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-        
-        // Carrega Moedas e Tema
         document.getElementById('coin-count').innerText = localStorage.getItem('joao_levi_coins') || 0;
-        const savedTheme = localStorage.getItem('joao_levi_theme') || '#2A75BB';
-        document.getElementById('app-container').style.borderColor = savedTheme;
+        document.getElementById('app-container').style.borderColor = localStorage.getItem('joao_levi_theme') || '#2A75BB';
+        
+        if(dow === 0) { document.getElementById('sunday-banner').style.display='block'; document.getElementById('timer-container').style.display='none'; }
+        else { document.getElementById('sunday-banner').style.display='none'; document.getElementById('timer-container').style.display='block'; }
 
-        // Lógica de Booster
         let total = parseInt(localStorage.getItem('joao_levi_total_days') || 0);
-        let last = parseInt(localStorage.getItem('joao_levi_last_booster_day') || 0);
-        if ((total - last >= 15) || !localStorage.getItem('booster_start')) {
-            document.getElementById('booster-area').style.display = 'block';
-        }
+        let lastB = parseInt(localStorage.getItem('joao_levi_last_booster') || 0);
+        if (total - lastB >= 15 || !localStorage.getItem('booster_ja_aberto')) document.getElementById('booster-area').style.display='block';
 
-        loadTasks();
-        renderPokedex();
-        updateBadges();
-    }
-
-    function updateBadges() {
-        // Desbloqueia insígnias baseado no percentual mensal (barra azul)
-        let mP = parseFloat(document.getElementById('monthly-text').innerText);
-        for(let i=1; i<=8; i++) {
-            if (mP >= (i * 12.5)) { // 100 / 8 = 12.5% por insígnia
-                document.getElementById('badge-' + i).classList.add('unlocked');
-            }
-        }
+        loadTasks(); renderPokedex(); updatePartner();
     }
 
     function toggleTask(name) {
@@ -174,141 +149,165 @@
         const wasChecked = d[name];
         d[name] = !d[name];
         localStorage.setItem(hoje, JSON.stringify(d));
-        
-        // Ganha Moedas (10 por tarefa, 20 no domingo)
-        if (!wasChecked) {
+
+        let moedasHoje = JSON.parse(localStorage.getItem('paid_' + hoje) || "[]");
+        if (!wasChecked && !moedasHoje.includes(name)) {
             let coins = parseInt(localStorage.getItem('joao_levi_coins') || 0);
             let gain = (new Date().getDay() === 0) ? 20 : 10;
             localStorage.setItem('joao_levi_coins', coins + gain);
             document.getElementById('coin-count').innerText = coins + gain;
-            document.getElementById('sound-coin').play().catch(e=>{});
+            moedasHoje.push(name);
+            localStorage.setItem('paid_' + hoje, JSON.stringify(moedasHoje));
+            document.getElementById('sound-coin').play().catch(()=>{});
         }
+        loadTasks(); checkCompletion();
+    }
 
-        // Streak e Total
-        let tasks = (new Date().getDay() === 0) ? [...TAREFAS_DOMINGO] : [...TAREFAS_DIARIAS];
-        if (tasks.every(t => d[t])) {
-            if (localStorage.getItem('joao_levi_lastDone') !== hoje) {
-                localStorage.setItem('joao_levi_streak', parseInt(localStorage.getItem('joao_levi_streak') || 0) + 1);
-                localStorage.setItem('joao_levi_total_days', parseInt(localStorage.getItem('joao_levi_total_days') || 0) + 1);
-                localStorage.setItem('joao_levi_lastDone', hoje);
-                createPokeballExplosion();
+    function checkCompletion() {
+        const hoje = new Date().toLocaleDateString('pt-BR');
+        let d = JSON.parse(localStorage.getItem(hoje) || "{}");
+        const dow = new Date().getDay();
+        let tasks = (dow === 0) ? [...TAREFAS_DOMINGO] : [...TAREFAS_DIARIAS];
+        if (dow !== 0 && [2,4,6].includes(dow)) tasks.push(TAREFA_PIANO);
+
+        if (tasks.every(t => d[t]) && localStorage.getItem('done_' + hoje) !== 'true') {
+            localStorage.setItem('done_' + hoje, 'true');
+            let s = parseInt(localStorage.getItem('joao_levi_streak') || 0) + 1;
+            localStorage.setItem('joao_levi_streak', s);
+            localStorage.setItem('joao_levi_total_days', parseInt(localStorage.getItem('joao_levi_total_days') || 0) + 1);
+            createPokeballExplosion();
+
+            // Lógica de finalização de ciclo (21 dias)
+            if (s === 21) {
+                let cycle = parseInt(localStorage.getItem('joao_levi_cycle') || 0) % 3;
+                let hall = JSON.parse(localStorage.getItem('joao_levi_HALL_FAMA') || "[]");
+                let pokemonFinal = STARTERS[cycle][2];
+                if (!hall.includes(pokemonFinal)) hall.push(pokemonFinal);
+                localStorage.setItem('joao_levi_HALL_FAMA', JSON.stringify(hall));
+                localStorage.setItem('joao_levi_streak', 0);
+                localStorage.setItem('joao_levi_cycle', cycle + 1);
+                alert("21 DIAS! Seu parceiro foi para o Hall da Fama e um novo ovo apareceu!");
+                location.reload();
             }
         }
-        loadTasks();
+        updatePartner();
     }
 
-    function openBooster() {
-        document.getElementById('sound-booster').play().catch(e=>{});
-        createPokeballExplosion();
-        document.getElementById('booster-area').style.display = 'none';
-        localStorage.setItem('booster_start', 'done');
-        localStorage.setItem('joao_levi_last_booster_day', localStorage.getItem('joao_levi_total_days'));
-
-        let dex = JSON.parse(localStorage.getItem('joao_levi_pokedex_MASTER') || "[]");
-        // Ganha 2 Dinos + 4 Aleatórios (qualquer ID 1-600)
-        for(let i=0; i<2; i++) { let id = DINO_POKEMON[Math.floor(Math.random()*6)].id; if(!dex.includes(id)) dex.push(id); }
-        for(let i=0; i<4; i++) { let id = Math.floor(Math.random()*600)+1; if(!dex.includes(id)) dex.push(id); }
-        
-        localStorage.setItem('joao_levi_pokedex_MASTER', JSON.stringify(dex));
-        alert("PACOTINHO ABERTO! 6 novas cartas na Pokédex!");
-        renderPokedex();
-    }
-
-    function openShop() { document.getElementById('shop-modal').style.display = 'flex'; }
-
-    function buyTheme(color, price) {
-        let coins = parseInt(localStorage.getItem('joao_levi_coins') || 0);
-        if (coins >= price) {
-            localStorage.setItem('joao_levi_coins', coins - price);
-            localStorage.setItem('joao_levi_theme', color);
-            document.getElementById('coin-count').innerText = coins - price;
-            document.getElementById('app-container').style.borderColor = color;
-            alert("Tema atualizado!");
-        } else {
-            alert("Moedas insuficientes! Continue cumprindo tarefas.");
-        }
-    }
-
-    function createPokeballExplosion() {
-        for (let i = 0; i < 25; i++) {
-            const b = document.createElement('div'); b.className = 'pokeball-particle';
-            b.style.left = Math.random() * 90 + 'vw'; b.style.top = '100vh';
-            document.body.appendChild(b);
-            setTimeout(() => {
-                b.style.transform = `translate(${(Math.random()-0.5)*400}px, -${Math.random()*700+200}px) rotate(${Math.random()*360}deg)`;
-                b.style.opacity = '0';
-            }, 10);
-            setTimeout(() => b.remove(), 1500);
-        }
-    }
-
-    async function showPokemonCard(id) {
-        const modal = document.getElementById('modal-card');
-        const content = document.getElementById('card-content');
-        modal.style.display = 'flex';
-        content.innerHTML = "Carregando...";
-        
-        const dino = DINO_POKEMON.find(d => d.id == id);
-        if (dino) {
-            content.innerHTML = `<h3>${dino.name}</h3><img src="${dino.img}" width="150"><p>Tipo: ${dino.type}</p>`;
-        } else {
-            try {
-                const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-                const data = await resp.json();
-                content.innerHTML = `<h3>${data.name.toUpperCase()}</h3><img src="${data.sprites.other['official-artwork'].front_default}" width="150">`;
-            } catch(e) { content.innerHTML = "Erro."; }
-        }
-    }
-
-    function loadTasks() {
-        const today = new Date().toLocaleDateString('pt-BR');
-        const dow = new Date().getDay();
-        const list = (dow === 0) ? [...TAREFAS_DOMINGO] : [...TAREFAS_DIARIAS];
-        let saved = JSON.parse(localStorage.getItem(today) || "{}");
-        let html = ""; let done = 0;
-        list.forEach(t => {
-            const ck = saved[t] ? 'checked' : ''; if(saved[t]) done++;
-            html += `<div class="task-item ${ck}"><input type="checkbox" ${ck} onchange="toggleTask('${t}')"><span>${t}</span></div>`;
-        });
-        document.getElementById('task-list').innerHTML = html;
-        let p = (done / list.length) * 100;
-        document.getElementById('capture-area').style.display = (p === 100 && !localStorage.getItem('cap_'+today)) ? 'block' : 'none';
-        
-        // Mensal
-        let totalD = 0, totalP = 0;
-        for(let i=0; i<30; i++) {
-            let d = new Date(); d.setDate(d.getDate()-i); if(d.getDay() === 0) continue;
-            totalP += TAREFAS_DIARIAS.length;
-            let data = JSON.parse(localStorage.getItem(d.toLocaleDateString('pt-BR')) || "{}");
-            Object.values(data).forEach(v => { if(v) totalD++; });
-        }
-        let mP = ((totalD/totalP)*100) || 0;
-        document.getElementById('monthly-bar').style.width = mP + "%";
-        document.getElementById('monthly-text').innerText = Math.round(mP);
-        updateBadges();
-    }
-
-    function renderPokedex() {
-        let dex = JSON.parse(localStorage.getItem('joao_levi_pokedex_MASTER') || "[]");
-        const grid = document.getElementById('pokedex-grid'); grid.innerHTML = "";
-        dex.forEach(id => {
-            let isDino = typeof id === 'string';
-            let img = isDino ? DINO_POKEMON.find(d => d.id === id).img : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
-            grid.innerHTML += `<div class="pokedex-slot" onclick="showPokemonCard('${id}')"><img src="${img}"></div>`;
-        });
-    }
-
-    function capturePokemon() {
-        document.getElementById('sound-capture').play().catch(e=>{});
-        createPokeballExplosion();
+    async function capturePokemon() {
+        document.getElementById('sound-capture').play().catch(()=>{}); createPokeballExplosion();
         const id = POKEMONS_BASE[Math.floor(Math.random() * POKEMONS_BASE.length)];
         let dex = JSON.parse(localStorage.getItem('joao_levi_pokedex_MASTER') || "[]");
         if(!dex.includes(id)) dex.push(id);
         localStorage.setItem('joao_levi_pokedex_MASTER', JSON.stringify(dex));
         localStorage.setItem('cap_' + new Date().toLocaleDateString('pt-BR'), 'true');
-        showPokemonCard(id); renderPokedex(); loadTasks();
+        await showPokemonCard(id, "CAPTUROU!"); renderPokedex(); loadTasks();
     }
 
+    async function openBooster() {
+        document.getElementById('sound-booster').play().catch(()=>{}); createPokeballExplosion();
+        document.getElementById('booster-area').style.display='none';
+        localStorage.setItem('booster_ja_aberto', 'true');
+        localStorage.setItem('joao_levi_last_booster', localStorage.getItem('joao_levi_total_days'));
+        let rareDex = JSON.parse(localStorage.getItem('joao_levi_pokedex_RARE') || "[]");
+        for(let i=0; i<2; i++) { let id = DINO_POKEMON[Math.floor(Math.random()*6)].id; if(!rareDex.includes(id)) rareDex.push(id); }
+        for(let i=0; i<4; i++) { let id = Math.floor(Math.random()*500)+1; if(!rareDex.includes(id)) rareDex.push(id); }
+        localStorage.setItem('joao_levi_pokedex_RARE', JSON.stringify(rareDex));
+        alert("6 CARTAS RARAS!"); renderPokedex();
+    }
+
+    async function showPokemonCard(id, title = "INFO POKÉMON") {
+        const modal = document.getElementById('modal-card'); const img = document.getElementById('card-img');
+        const content = document.getElementById('card-content'); document.getElementById('card-header-title').innerText = title;
+        modal.style.display = 'flex'; content.innerHTML = "Buscando...";
+        const dino = DINO_POKEMON.find(d => d.id == id);
+        if (dino) {
+            img.src = dino.img;
+            content.innerHTML = `<div style="font-weight:bold; font-size:16px;">${dino.name.toUpperCase()}</div><div class="info-tag" style="background:purple">COFRE ANCESTRAL</div><div style="font-size:11px; margin-top:5px;">${dino.desc}</div><div style="display:grid; grid-template-columns:1fr 1fr; font-size:11px; gap:4px; margin-top:10px;"><div>ATA: ${dino.atk}</div><div>DEF: ${dino.def}</div><div>HP: ${dino.hp}</div><div>VEL: ${dino.vel}</div></div>`;
+        } else {
+            try {
+                const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`); const data = await resp.json();
+                img.src = data.sprites.other['official-artwork'].front_default;
+                const typeResp = await fetch(data.types[0].type.url); const typeData = await typeResp.json();
+                const vant = typeData.damage_relations.double_damage_to.map(t => `<span class="info-tag" style="background:${TYPE_COLORS[t.name]}">${TYPE_MAP[t.name]}</span>`).join('') || "Nenhuma";
+                const fraq = typeData.damage_relations.double_damage_from.map(t => `<span class="info-tag" style="background:${TYPE_COLORS[t.name]}">${TYPE_MAP[t.name]}</span>`).join('') || "Nenhuma";
+                const tipos = data.types.map(t => `<span class="info-tag" style="background:${TYPE_COLORS[t.type.name]}">${TYPE_MAP[t.type.name]}</span>`).join('');
+                content.innerHTML = `<div style="font-weight:bold; font-size:15px;">${data.name.toUpperCase()}</div><div>${tipos}</div><div style="font-size:10px; font-weight:bold; margin-top:8px;">VANTAGEM:</div><div>${vant}</div><div style="font-size:10px; font-weight:bold; margin-top:8px;">FRAQUEZA:</div><div>${fraq}</div><div style="display:grid; grid-template-columns:1fr 1fr; font-size:10px; gap:3px; margin-top:8px;"><div>ATA: ${data.stats[1].base_stat}</div><div>DEF: ${data.stats[2].base_stat}</div><div>HP: ${data.stats[0].base_stat}</div><div>VEL: ${data.stats[5].base_stat}</div></div>`;
+            } catch (e) { content.innerHTML = "Erro ao carregar."; }
+        }
+    }
+
+    function createPokeballExplosion() {
+        for (let i = 0; i < 25; i++) {
+            const p = document.createElement('div'); p.className = 'pokeball-particle';
+            p.style.left = Math.random() * 90 + 'vw'; p.style.top = '100vh'; document.body.appendChild(p);
+            setTimeout(() => { p.style.transform = `translate(${(Math.random()-0.5)*300}px, -${Math.random()*600+200}px) rotate(${Math.random()*360}deg)`; p.style.opacity = '0'; }, 50);
+            setTimeout(() => p.remove(), 1500);
+        }
+    }
+
+    function loadTasks() {
+        const today = new Date().toLocaleDateString('pt-BR'); const dow = new Date().getDay();
+        const div = document.getElementById('task-list');
+        let tasks = (dow === 0) ? [...TAREFAS_DOMINGO] : [...TAREFAS_DIARIAS];
+        if (dow !== 0 && [2,4,6].includes(dow)) tasks.push(TAREFA_PIANO);
+        let saved = JSON.parse(localStorage.getItem(today) || "{}");
+        let html = ""; let done = 0;
+        tasks.forEach(t => { const ck = saved[t] ? 'checked' : ''; if(saved[t]) done++; html += `<div class="task-item ${ck}"><input type="checkbox" ${ck} onchange="toggleTask('${t}')"><span>${t}</span></div>`; });
+        div.innerHTML = html;
+        let p = (done / tasks.length) * 100;
+        document.getElementById('daily-bar').style.width = p + "%";
+        document.getElementById('capture-area').style.display = (p === 100 && !localStorage.getItem('cap_'+today)) ? 'block' : 'none';
+        updateMonthlyDashboard();
+    }
+
+    function updateMonthlyDashboard() {
+        let totalD = 0, totalP = 0;
+        for(let i=0; i<30; i++) {
+            let d = new Date(); d.setDate(d.getDate() - i); if(d.getDay() === 0) continue;
+            let q = TAREFAS_DIARIAS.length + ([2,4,6].includes(d.getDay()) ? 1 : 0);
+            totalP += q; let data = JSON.parse(localStorage.getItem(d.toLocaleDateString('pt-BR')) || "{}");
+            Object.values(data).forEach(v => { if(v) totalD++; });
+        }
+        let mP = ((totalD / totalP) * 100) || 0;
+        document.getElementById('monthly-bar').style.width = mP + "%";
+        document.getElementById('bonus-money').innerText = (mP >= 50 ? (20 * (mP/100)) : 0).toFixed(2);
+        document.getElementById('bonus-time').innerText = Math.round(mP >= 50 ? (30 * (mP/100)) : 0);
+        for(let i=1; i<=8; i++) {
+            const b = document.getElementById('badge-' + i);
+            if (mP >= (i * 12.5)) b.classList.add('unlocked'); else b.classList.remove('unlocked');
+        }
+    }
+
+    function updatePartner() {
+        let s = parseInt(localStorage.getItem('joao_levi_streak') || 0);
+        document.getElementById('streak-count').innerText = s;
+        let cycle = parseInt(localStorage.getItem('joao_levi_cycle') || 0) % 3;
+        let stage = s >= 14 ? 2 : (s >= 7 ? 1 : 0);
+        let lastS = parseInt(localStorage.getItem('joao_levi_lastStage') || 0);
+        if (stage > lastS) { showPokemonCard(STARTERS[cycle][stage], "EVOLUIU!"); document.getElementById('sound-level').play().catch(()=>{}); }
+        localStorage.setItem('joao_levi_lastStage', stage);
+        const pId = STARTERS[cycle][stage];
+        document.getElementById('partner-img').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pId}.png`;
+        const names = {1:"Bulbasaur", 2:"Ivysaur", 3:"Venusaur", 4:"Charmander", 5:"Charmeleon", 6:"Charizard", 7:"Squirtle", 8:"Wartortle", 9:"Blastoise"};
+        document.getElementById('partner-name').innerText = names[pId] || "Parceiro";
+    }
+
+    function renderPokedex() {
+        let comm = JSON.parse(localStorage.getItem('joao_levi_pokedex_MASTER') || "[]");
+        let rare = JSON.parse(localStorage.getItem('joao_levi_pokedex_RARE') || "[]");
+        let hall = JSON.parse(localStorage.getItem('joao_levi_HALL_FAMA') || "[]");
+        const cG = document.getElementById('pokedex-grid'); const rG = document.getElementById('rare-grid'); const hG = document.getElementById('hall-grid');
+        cG.innerHTML = ""; rG.innerHTML = ""; hG.innerHTML = "";
+        comm.forEach(id => { cG.innerHTML += `<div class="slot" onclick="showPokemonCard('${id}')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png"></div>`; });
+        rare.forEach(id => { let isD = typeof id === 'string'; let img = isD ? DINO_POKEMON.find(d => d.id === id).img : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`; rG.innerHTML += `<div class="slot" onclick="showPokemonCard('${id}')"><img src="${img}"></div>`; });
+        hall.forEach(id => { hG.innerHTML += `<div class="slot" onclick="showPokemonCard('${id}', 'HALL DA FAMA')"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png"></div>`; });
+    }
+
+    function toggleTimer() { if(timerRunning) { clearInterval(timerInterval); document.getElementById('btn-timer').innerText = "VOLTAR"; } else { timerInterval = setInterval(() => { timeLeft--; updateTimerDisplay(); if(timeLeft <= 0) { clearInterval(timerInterval); document.getElementById('sound-timer').play().catch(()=>{}); alert("TEMPO CONCLUÍDO!"); resetTimer(); } }, 1000); document.getElementById('btn-timer').innerText = "PAUSAR"; } timerRunning = !timerRunning; }
+    function resetTimer() { clearInterval(timerInterval); timerRunning = false; timeLeft = 15 * 60; updateTimerDisplay(); document.getElementById('btn-timer').innerText = "INICIAR"; }
+    function updateTimerDisplay() { const m = Math.floor(timeLeft / 60); const s = timeLeft % 60; document.getElementById('timer').innerText = m + ":" + (s < 10 ? '0' : '') + s; }
+    function buyTheme(c, p) { let coins = parseInt(localStorage.getItem('joao_levi_coins') || 0); if (coins >= p) { localStorage.setItem('joao_levi_coins', coins - p); localStorage.setItem('joao_levi_theme', c); location.reload(); } else alert("Moedas insuficientes!"); }
+    function openShop() { document.getElementById('shop-modal').style.display = 'flex'; }
     function toggleMusic() { const m = document.getElementById('bg-music'); m.paused ? m.play() : m.pause(); }
     function closeCard() { document.getElementById('modal-card').style.display = 'none'; }
     window.onload = setup;
